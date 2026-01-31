@@ -325,6 +325,79 @@ html_content = f"""<!DOCTYPE html>
         ::-webkit-scrollbar-thumb {{ background: #334155; border-radius: 4px; }}
         ::-webkit-scrollbar-thumb:hover {{ background: #475569; }}
 
+        /* Responsive / Mobile Styles */
+        @media (max-width: 768px) {{
+            header {{
+                flex-direction: column;
+                height: auto;
+                padding: 1rem;
+                gap: 1rem;
+            }}
+            
+            .header-left {{
+                flex-direction: column;
+                gap: 0.5rem;
+                width: 100%;
+            }}
+
+            h1 {{
+                font-size: 1.2rem;
+                margin-right: 0;
+                text-align: center;
+            }}
+            
+            #controls {{
+                width: 100%;
+                justify-content: center;
+            }}
+            
+            .tabs {{
+                width: 100%;
+                justify-content: center;
+            }}
+            
+            .tab-btn {{
+                flex: 1;
+                text-align: center;
+            }}
+
+            /* Adjust Stage */
+            #stage-container {{
+                height: 30vh;
+                padding-bottom: 3rem; 
+            }}
+
+            .avatar {{
+                /* Tighter margins and scaling for mobile */
+            }}
+            
+            .avatar.visible {{
+                width: 50px; /* Reduced visual width space */
+                margin: 0 0.15rem; /* Very tight margins */
+            }}
+            
+            .avatar-inner {{
+                 transform: scale(0.65); 
+            }}
+            
+            /* Adjust Script View */
+            main {{
+                padding: 1rem;
+            }}
+            
+            #script-container {{
+                 gap: 1rem;
+            }}
+            
+            .content-cn {{
+                font-size: 1.1rem;
+            }}
+            
+            .content-en {{
+                font-size: 0.9rem;
+            }}
+        }}
+
     </style>
 </head>
 <body>
