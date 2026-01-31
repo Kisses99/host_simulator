@@ -93,6 +93,26 @@
             gap: 0.5rem;
             align-items: center;
         }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.5rem;
+        }
+        
+        .control-group label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-bottom: 2px;
+        }
+        
+        input[type="range"] {
+            width: 80px;
+            height: 4px;
+            accent-color: var(--accent-color);
+        }
 
         button {
             background: var(--card-bg);
@@ -255,19 +275,22 @@
             overflow: hidden;
         }
         
+        /* Fixed precedence: Transforms first, then visible overrides */
         .avatar.side-left { transform: translateX(-150px) scale(0.8); }
         .avatar.side-right { transform: translateX(150px) scale(0.8); }
+
         .avatar.visible {
             width: 80px; 
-            margin: 0 10px; /* Fixed consistent margin */
+            margin: 0 10px; 
             opacity: 1;
-            transform: translateX(0) scale(1);
+            transform: translateX(0) scale(1); /* Override transforms */
             transition-delay: calc(var(--i) * 0.1s);
-            flex-shrink: 0; /* Important: Do not shrink avatars if space is tight */
+            flex-shrink: 0;
         }
         .avatar.visible.slow-entry {
             transition-delay: calc(var(--i) * 0.5s);
         }
+        
         .avatar.speaking { transform: translateY(-15px) scale(1.15); z-index: 10; }
         
         .avatar-inner { width: 80px; display: flex; flex-direction: column; align-items: center; position: relative; }
@@ -361,6 +384,13 @@
         </div>
         <div id="controls">
             <button class="secondary" onclick="openEditor()">Edit / Paste CSV</button>
+            
+            <div class="control-group">
+                <label for="speed-range" id="speed-label">Speed: 1.5s</label>
+                <!-- Default speed 1500ms (1.5s) -->
+                <input type="range" id="speed-range" min="500" max="5000" step="100" value="1500">
+            </div>
+
             <button id="prev-btn">Previous</button>
             <button id="next-btn" class="primary">Next</button>
             <button id="autoplay-btn">Auto-Play</button>
@@ -412,6 +442,7 @@
         
         let currentIndex = -1;
         let autoPlayInterval = null;
+        let autoPlaySpeed = 1500; // Default 1.5s
         
         // --- DATA STRUCTURE MANAGEMENT ---
         
@@ -762,6 +793,7 @@
 
         function next() { setIndex(currentIndex + 1); }
         function prev() { setIndex(currentIndex - 1); }
+        
         function stopAutoPlay() {
             if (autoPlayInterval) {
                 clearInterval(autoPlayInterval); autoPlayInterval = null;
@@ -775,9 +807,19 @@
                 const btn = document.getElementById('autoplay-btn');
                 btn.textContent = 'Stop'; btn.classList.add('primary');
                 next();
-                autoPlayInterval = setInterval(next, 3000);
+                autoPlayInterval = setInterval(next, autoPlaySpeed);
             }
         }
+
+        // Speed Control
+        document.getElementById('speed-range').addEventListener('input', (e) => {
+            autoPlaySpeed = parseInt(e.target.value);
+            document.getElementById('speed-label').textContent = `Speed: ${autoPlaySpeed/1000}s`;
+            if (autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+                autoPlayInterval = setInterval(next, autoPlaySpeed);
+            }
+        });
 
         document.getElementById('next-btn').addEventListener('click', next);
         document.getElementById('prev-btn').addEventListener('click', prev);
