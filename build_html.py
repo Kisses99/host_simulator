@@ -784,7 +784,7 @@ html_content = f"""<!DOCTYPE html>
             updateStage(index);
         }}
         
-        function updateStage(index) {
+        function updateStage(index) {{
             const activeSpeakers = getSegmentSpeakers(index);
             const currentItem = scriptData[index];
             if (!currentItem) return;
@@ -796,11 +796,11 @@ html_content = f"""<!DOCTYPE html>
             
             // Handle Duo Mode (Closer spacing for 2 people)
             const stage = document.getElementById('stage-container');
-            if (activeSpeakers.length === 2 && !isAll) {
+            if (activeSpeakers.length === 2 && !isAll) {{
                 stage.classList.add('duo-mode');
-            } else {
+            }} else {{
                 stage.classList.remove('duo-mode');
-            }
+            }}
             
             hosts.forEach(name => {{
                 const el = avatarEls[name];
