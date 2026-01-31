@@ -295,6 +295,13 @@ html_content = f"""<!DOCTYPE html>
             transition-delay: calc(var(--i) * 0.1s);
             flex-shrink: 0;
         }}
+        
+        /* When only 2 hosts, bring them closer */
+        #stage-container.duo-mode .avatar.visible {{
+            margin: 0 -10px; /* Slight overlap or very close */
+            transform: translateX(0) scale(1.1); /* Slightly larger */
+        }}
+        
         .avatar.visible.slow-entry {{
             transition-delay: calc(var(--i) * 0.5s);
         }}
@@ -777,7 +784,7 @@ html_content = f"""<!DOCTYPE html>
             updateStage(index);
         }}
         
-        function updateStage(index) {{
+        function updateStage(index) {
             const activeSpeakers = getSegmentSpeakers(index);
             const currentItem = scriptData[index];
             if (!currentItem) return;
@@ -786,6 +793,14 @@ html_content = f"""<!DOCTYPE html>
             const isAll = speakersLower === 'all' || speakersLower.includes('one by one');
             const isOneByOne = speakersLower.includes('one by one');
             const currentSpeaker = currentSpeakerRaw.replace(/[^a-zA-Z\u4e00-\u9fa5]/g, '');
+            
+            // Handle Duo Mode (Closer spacing for 2 people)
+            const stage = document.getElementById('stage-container');
+            if (activeSpeakers.length === 2 && !isAll) {
+                stage.classList.add('duo-mode');
+            } else {
+                stage.classList.remove('duo-mode');
+            }
             
             hosts.forEach(name => {{
                 const el = avatarEls[name];
