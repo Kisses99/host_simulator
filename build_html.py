@@ -341,14 +341,6 @@ html_content = f"""<!DOCTYPE html>
         
         /* Gender Markers */
         /* Girls: Hair Bow/Flower on top right */
-        .avatar[data-gender="girl"] .avatar-body::after {
-             /* We keep the body ::after, but we add a new pseudo element for the bow? 
-                CSS ::after is already used for the body.
-                Let's use a child element for the marker, OR modify ::before/::after usage.
-                Actually simpler: Add a marker element in JS.
-                But we can use specific classes.
-             */
-        }
         
         .gender-marker {
             position: absolute;
@@ -789,17 +781,17 @@ html_content = f"""<!DOCTYPE html>
         }}
 
         const stage = document.getElementById('stage-container');
-        const avatarEls = {};
+        const avatarEls = {{}};
         
         const girls = ["Jasmine", "Amy", "Emeline", "Esther"];
         // Hosts: Amy, 多多, Emeline, Jason, Jasmine, Chris, Esther, Evan
         
-        hosts.forEach((name, index) => {
+        hosts.forEach((name, index) => {{
             const el = document.createElement('div');
             const sideClass = index < 4 ? 'side-left' : 'side-right';
             const gender = girls.includes(name) ? 'girl' : 'boy';
             
-            el.className = `avatar ${sideClass}`;
+            el.className = `avatar ${{sideClass}}`;
             el.dataset.name = name;
             el.dataset.gender = gender;
             el.style.setProperty('--i', index); 
@@ -807,15 +799,15 @@ html_content = f"""<!DOCTYPE html>
             el.innerHTML = `
                 <div class="avatar-inner">
                     <div class="avatar-body">
-                        ${name[0]}
+                        ${{name[0]}}
                         <div class="gender-marker"></div>
                     </div>
-                    <div class="avatar-name">${name}</div>
+                    <div class="avatar-name">${{name}}</div>
                 </div>
             `;
             stage.appendChild(el);
             avatarEls[name] = el;
-        });
+        }});
 
         const container = document.getElementById('script-container');
         function render() {{
