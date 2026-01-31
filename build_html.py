@@ -263,6 +263,8 @@ html_content = f"""<!DOCTYPE html>
             overflow: hidden;
         }}
         
+        .avatar.side-left {{ transform: translateX(-150px) scale(0.8); }}
+        .avatar.side-right {{ transform: translateX(150px) scale(0.8); }}
         .avatar.visible {{
             width: 80px; 
             margin: 0 10px; /* Fixed consistent margin */
@@ -274,8 +276,6 @@ html_content = f"""<!DOCTYPE html>
         .avatar.visible.slow-entry {{
             transition-delay: calc(var(--i) * 0.5s);
         }}
-        .avatar.side-left {{ transform: translateX(-150px) scale(0.8); }}
-        .avatar.side-right {{ transform: translateX(150px) scale(0.8); }}
         .avatar.speaking {{ transform: translateY(-15px) scale(1.15); z-index: 10; }}
         
         .avatar-inner {{ width: 80px; display: flex; flex-direction: column; align-items: center; position: relative; }}
