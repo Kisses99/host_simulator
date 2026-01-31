@@ -311,7 +311,7 @@ html_content = f"""<!DOCTYPE html>
         .avatar-inner {{ width: 80px; display: flex; flex-direction: column; align-items: center; position: relative; }}
 
         /* Humanoid Figure */
-        .avatar-body {
+        .avatar-body {{
             width: 50px; height: 50px; border-radius: 50%;
             background: var(--color);
             display: flex; align-items: center; justify-content: center;
@@ -320,57 +320,57 @@ html_content = f"""<!DOCTYPE html>
             border: 2px solid transparent;
             transition: all 0.3s ease;
             position: relative; z-index: 2;
-        }
+        }}
         
-        .avatar.speaking .avatar-body {
+        .avatar.speaking .avatar-body {{
             box-shadow: 0 0 20px var(--glow-color); border: 2px solid #fff;
-        }
+        }}
         
         /* Body/Shoulders */
-        .avatar-body::after {
+        .avatar-body::after {{
             content: ''; position: absolute; top: 45px; left: 50%; transform: translateX(-50%);
             width: 60px; height: 40px; background: var(--color); opacity: 0.8;
             border-radius: 20px 20px 0 0; z-index: -1;
-        }
+        }}
         
         /* Neck */
-        .avatar-body::before {
+        .avatar-body::before {{
              content: ''; position: absolute; bottom: -5px; width: 20px; height: 10px;
              background: var(--color); z-index: -1;
-        }
+        }}
         
         /* Gender Markers */
         /* Girls: Hair Bow/Flower on top right */
         
-        .gender-marker {
+        .gender-marker {{
             position: absolute;
             z-index: 3;
-        }
+        }}
         
         /* Girl: Hair Bow */
-        .avatar[data-gender="girl"] .gender-marker {
+        .avatar[data-gender="girl"] .gender-marker {{
             top: -5px; right: -5px;
             width: 20px; height: 20px;
             background: #ff69b4; /* Pink bow */
             border-radius: 50%;
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        }
-        .avatar[data-gender="girl"] .gender-marker::after {
+        }}
+        .avatar[data-gender="girl"] .gender-marker::after {{
             content: '🎀';
             position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             font-size: 14px;
-        }
+        }}
 
         /* Boy: Bow Tie */
-        .avatar[data-gender="boy"] .gender-marker {
+        .avatar[data-gender="boy"] .gender-marker {{
             bottom: -5px; left: 50%;
             transform: translateX(-50%);
             width: 24px; height: 12px;
             background: #333;
             border-radius: 4px;
-        }
-        .avatar[data-gender="boy"] .gender-marker::after {
+        }}
+        .avatar[data-gender="boy"] .gender-marker::after {{
             content: '';
             position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
@@ -378,13 +378,13 @@ html_content = f"""<!DOCTYPE html>
             border-right: 5px solid transparent;
             border-top: 5px solid #fff;
             opacity: 0.3;
-        }
+        }}
 
-        .avatar-name {
+        .avatar-name {{
             font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);
             background: rgba(0,0,0,0.6); padding: 2px 6px; border-radius: 4px;
             white-space: nowrap; margin-top: 45px; z-index: 3;
-        }
+        }}
         
         /* Speaker Colors */
         .avatar[data-name="Jasmine"] {{ --color: var(--speaker-jasmine); --glow-color: var(--speaker-jasmine); }}
