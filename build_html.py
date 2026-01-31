@@ -18,7 +18,7 @@ html_content = f"""<!DOCTYPE html>
             --card-bg: #1e293b;
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
-            --accent-color: #f59e0b; /* Gold/Orange for CNY */
+            --accent-color: #f59e0b;
             --accent-glow: rgba(245, 158, 11, 0.4);
             
             /* Speaker Identities */
@@ -32,11 +32,7 @@ html_content = f"""<!DOCTYPE html>
             --speaker-emeline: #d946ef;
         }}
 
-        * {{
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }}
+        * {{ box-sizing: border-box; margin: 0; padding: 0; }}
 
         body {{
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -48,8 +44,9 @@ html_content = f"""<!DOCTYPE html>
             overflow: hidden;
         }}
 
+        /* --- HEADER & CONTROLS --- */
         header {{
-            padding: 0.5rem 2rem;
+            padding: 0.5rem 1rem;
             background: rgba(15, 23, 42, 0.95);
             border-bottom: 1px solid #334155;
             display: flex;
@@ -62,26 +59,27 @@ html_content = f"""<!DOCTYPE html>
         .header-left {{
             display: flex;
             align-items: center;
-            gap: 2rem;
+            gap: 1rem;
         }}
 
         h1 {{
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             color: var(--accent-color);
             text-shadow: 0 0 10px var(--accent-glow);
-            margin-right: 1rem;
+            margin-right: 0.5rem;
+            white-space: nowrap;
         }}
         
         .tabs {{
             display: flex;
             background: #0f172a;
-            padding: 4px;
+            padding: 2px;
             border-radius: 8px;
             border: 1px solid #334155;
         }}
         
         .tab-btn {{
-            padding: 0.5rem 1rem;
+            padding: 0.4rem 0.8rem;
             border-radius: 6px;
             border: none;
             background: transparent;
@@ -89,6 +87,7 @@ html_content = f"""<!DOCTYPE html>
             cursor: pointer;
             font-weight: 500;
             transition: all 0.2s;
+            font-size: 0.85rem;
         }}
         
         .tab-btn.active {{
@@ -96,14 +95,11 @@ html_content = f"""<!DOCTYPE html>
             color: var(--text-primary);
             box-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }}
-        
-        .tab-btn:hover:not(.active) {{
-            color: var(--text-primary);
-        }}
 
         #controls {{
             display: flex;
-            gap: 1rem;
+            gap: 0.5rem;
+            align-items: center;
         }}
 
         button {{
@@ -115,7 +111,7 @@ html_content = f"""<!DOCTYPE html>
             cursor: pointer;
             transition: all 0.2s ease;
             font-weight: 500;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }}
 
         button:hover {{
@@ -129,7 +125,117 @@ html_content = f"""<!DOCTYPE html>
             border: none;
         }}
 
-        /* --- STAGE AREA --- */
+        /* --- EDITOR MODAL --- */
+        #editor-modal {{
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            display: none; /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }}
+        
+        #editor-content {{
+            background: var(--bg-color);
+            width: 90%;
+            max-width: 1000px;
+            height: 80vh;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #334155;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }}
+        
+        .editor-header {{
+            padding: 1rem;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }}
+        
+        .editor-body {{
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }}
+        
+        .editor-column {{
+            flex: 1;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #334155;
+            overflow-y: auto;
+        }}
+        
+        .editor-column:last-child {{ border-right: none; }}
+        
+        .editor-column h3 {{
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }}
+        
+        /* Drag & Drop List */
+        #sortable-list {{
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }}
+        
+        .sortable-item {{
+            background: var(--card-bg);
+            padding: 0.75rem;
+            border-radius: 6px;
+            cursor: grab;
+            border: 1px solid #334155;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.2s;
+        }}
+        
+        .sortable-item:hover {{
+            background: #334155;
+        }}
+        
+        .sortable-item:active {{
+            cursor: grabbing;
+        }}
+        
+        .sortable-item .handle {{
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            line-height: 1;
+        }}
+        
+        /* CSV Text Area */
+        #csv-input {{
+            flex: 1;
+            background: #020617;
+            color: #ccc;
+            border: 1px solid #334155;
+            padding: 1rem;
+            font-family: monospace;
+            resize: none;
+            border-radius: 6px;
+        }}
+        
+        .editor-footer {{
+            padding: 1rem;
+            border-top: 1px solid #334155;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }}
+
+        /* --- STAGE --- */
         #stage-container {{
             height: 35vh;
             background: linear-gradient(to bottom, #020617, #0f172a);
@@ -144,133 +250,63 @@ html_content = f"""<!DOCTYPE html>
         }}
 
         .avatar {{
-            /* COLLAPSED STATE (Hidden) */
-            width: 0;
-            margin: 0;
-            opacity: 0;
+            width: 0; margin: 0; opacity: 0;
             transform: scale(0.8);
-            
-            height: 140px; /* Increased height for body */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-end;
+            height: 140px; 
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
             position: relative;
-            
-            /* Staggered entry */
             transition: 
                 width 0.5s ease-in-out,
                 margin 0.5s ease-in-out,
                 opacity 0.5s ease-in-out,
                 transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-            
             overflow: hidden;
         }}
         
-        /* Apply dynamic delay based on index for natural entrance */
         .avatar.visible {{
+            width: 80px; margin: 0 1rem; opacity: 1;
+            transform: translateX(0) scale(1);
             transition-delay: calc(var(--i) * 0.1s);
         }}
-        
-        /* Slow stagger for one-by-one visualization */
         .avatar.visible.slow-entry {{
             transition-delay: calc(var(--i) * 0.5s);
         }}
-
-        .avatar-inner {{
-            width: 80px; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-        }}
-
-        /* Side Exit transforms */
-        .avatar.side-left {{
-            transform: translateX(-150px) scale(0.8);
-        }}
-
-        .avatar.side-right {{
-           transform: translateX(150px) scale(0.8);
-        }}
+        .avatar.side-left {{ transform: translateX(-150px) scale(0.8); }}
+        .avatar.side-right {{ transform: translateX(150px) scale(0.8); }}
+        .avatar.speaking {{ transform: translateY(-15px) scale(1.15); z-index: 10; }}
         
-        .avatar.visible {{
-            /* VISIBLE STATE */
-            width: 80px;
-            margin: 0 1rem;
-            opacity: 1;
-            transform: translateX(0) scale(1);
-        }}
+        .avatar-inner {{ width: 80px; display: flex; flex-direction: column; align-items: center; position: relative; }}
 
-        .avatar.speaking {{
-            transform: translateY(-15px) scale(1.15);
-            z-index: 10;
-        }}
-        
-        .avatar.speaking .avatar-body {{
-            box-shadow: 0 0 20px var(--glow-color);
-            border: 2px solid #fff;
-        }}
-
-        /* HUMAN FIGURE STYLES */
+        /* Humanoid Figure */
         .avatar-body {{
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
+            width: 50px; height: 50px; border-radius: 50%;
             background: var(--color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 1.2rem;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 1.2rem;
             color: rgba(255,255,255,0.9);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             border: 2px solid transparent;
             transition: all 0.3s ease;
-            position: relative;
-            z-index: 2; /* Ensure head is above body */
+            position: relative; z-index: 2;
         }}
-        
-        /* Body/Torso */
+        .avatar.speaking .avatar-body {{
+            box-shadow: 0 0 20px var(--glow-color); border: 2px solid #fff;
+        }}
         .avatar-body::after {{
-            content: '';
-            position: absolute;
-            top: 45px; /* Position below head */
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 40px;
-            background: var(--color);
-            opacity: 0.8;
-            border-radius: 20px 20px 0 0; /* Rounded shoulders */
-            z-index: -1;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            content: ''; position: absolute; top: 45px; left: 50%; transform: translateX(-50%);
+            width: 60px; height: 40px; background: var(--color); opacity: 0.8;
+            border-radius: 20px 20px 0 0; z-index: -1;
         }}
-        
-        /* Neck connection */
         .avatar-body::before {{
-             content: '';
-             position: absolute;
-             bottom: -5px;
-             width: 20px;
-             height: 10px;
-             background: var(--color);
-             z-index: -1;
+             content: ''; position: absolute; bottom: -5px; width: 20px; height: 10px;
+             background: var(--color); z-index: -1;
         }}
-
         .avatar-name {{
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            background: rgba(0,0,0,0.6);
-            padding: 2px 6px;
-            border-radius: 4px;
-            white-space: nowrap;
-            margin-top: 45px; /* Push name down below body */
-            z-index: 3;
+            font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);
+            background: rgba(0,0,0,0.6); padding: 2px 6px; border-radius: 4px;
+            white-space: nowrap; margin-top: 45px; z-index: 3;
         }}
         
-        /* Speaker Colors Implementation */
+        /* Speaker Colors */
         .avatar[data-name="Jasmine"] {{ --color: var(--speaker-jasmine); --glow-color: var(--speaker-jasmine); }}
         .avatar[data-name="Esther"] {{ --color: var(--speaker-esther); --glow-color: var(--speaker-esther); }}
         .avatar[data-name="Amy"] {{ --color: var(--speaker-amy); --glow-color: var(--speaker-amy); }}
@@ -280,56 +316,23 @@ html_content = f"""<!DOCTYPE html>
         .avatar[data-name="多多"] {{ --color: var(--speaker-duoduo); --glow-color: var(--speaker-duoduo); }}
         .avatar[data-name="Emeline"] {{ --color: var(--speaker-emeline); --glow-color: var(--speaker-emeline); }}
 
-
-        main {{
-            flex: 1;
-            overflow-y: auto;
-            padding: 2rem;
-            scroll-behavior: smooth;
-        }}
-
-        #script-container {{
-            max-width: 800px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            padding-bottom: 50vh;
-        }}
-
+        main {{ flex: 1; overflow-y: auto; padding: 2rem; scroll-behavior: smooth; }}
+        #script-container {{ max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem; padding-bottom: 50vh; }}
+        
         .line-item {{
-            opacity: 0.4;
-            transition: all 0.3s ease;
-            border-left: 4px solid #334155;
-            padding: 1rem;
-            border-radius: 0 8px 8px 0;
-            background: transparent;
+            opacity: 0.4; transition: all 0.3s ease; border-left: 4px solid #334155; padding: 1rem;
+            border-radius: 0 8px 8px 0; background: transparent;
         }}
-
         .line-item.active {{
-            opacity: 1;
-            background: var(--card-bg);
-            border-left-color: var(--accent-color);
+            opacity: 1; background: var(--card-bg); border-left-color: var(--accent-color);
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
         }}
-
         .header-item {{
-            margin-top: 3rem;
-            margin-bottom: 1rem;
-            text-align: center;
-            color: var(--accent-color);
-            font-size: 1.5rem;
-            font-weight: bold;
-            border-bottom: 1px solid #334155;
-            padding-bottom: 0.5rem;
+            margin-top: 3rem; margin-bottom: 1rem; text-align: center;
+            color: var(--accent-color); font-size: 1.5rem; font-weight: bold;
+            border-bottom: 1px solid #334155; padding-bottom: 0.5rem;
         }}
-        
-        .speaker-label {{
-             font-weight: bold;
-             margin-bottom: 0.25rem;
-             display: block;
-        }}
-        
+        .speaker-label {{ font-weight: bold; margin-bottom: 0.25rem; display: block; }}
         .speaker-Jasmine {{ color: var(--speaker-jasmine); }}
         .speaker-Esther {{ color: var(--speaker-esther); }}
         .speaker-Amy {{ color: var(--speaker-amy); }}
@@ -344,75 +347,12 @@ html_content = f"""<!DOCTYPE html>
         ::-webkit-scrollbar-thumb {{ background: #334155; border-radius: 4px; }}
         ::-webkit-scrollbar-thumb:hover {{ background: #475569; }}
 
-        /* Responsive / Mobile Styles */
         @media (max-width: 768px) {{
-            header {{
-                flex-direction: column;
-                height: auto;
-                padding: 1rem;
-                gap: 1rem;
-            }}
-            
-            .header-left {{
-                flex-direction: column;
-                gap: 0.5rem;
-                width: 100%;
-            }}
-
-            h1 {{
-                font-size: 1.2rem;
-                margin-right: 0;
-                text-align: center;
-            }}
-            
-            #controls {{
-                width: 100%;
-                justify-content: center;
-            }}
-            
-            .tabs {{
-                width: 100%;
-                justify-content: center;
-            }}
-            
-            .tab-btn {{
-                flex: 1;
-                text-align: center;
-            }}
-
-            /* Adjust Stage */
-            #stage-container {{
-                height: 30vh;
-                padding-bottom: 3rem; 
-            }}
-            
-            .avatar.visible {{
-                width: 50px; /* Reduced visual width space */
-                margin: 0 0.15rem; /* Very tight margins */
-            }}
-            
-            .avatar-inner {{
-                 transform: scale(0.65); 
-            }}
-            
-            /* Adjust Script View */
-            main {{
-                padding: 1rem;
-            }}
-            
-            #script-container {{
-                 gap: 1rem;
-            }}
-            
-            .content-cn {{
-                font-size: 1.1rem;
-            }}
-            
-            .content-en {{
-                font-size: 0.9rem;
-            }}
+            header {{ flex-direction: column; height: auto; padding: 1rem; gap: 1rem; }}
+            .header-left {{ flex-direction: column; gap: 0.5rem; width: 100%; }}
+            #controls {{ width: 100%; justify-content: center; flex-wrap: wrap; }}
+            .avatar.visible {{ width: 50px; margin: 0 0.15rem; }}
         }}
-
     </style>
 </head>
 <body>
@@ -425,89 +365,331 @@ html_content = f"""<!DOCTYPE html>
             </div>
         </div>
         <div id="controls">
-            <button id="prev-btn">Previous (←)</button>
-            <button id="next-btn" class="primary">Next (Space/→)</button>
+            <button class="secondary" onclick="openEditor()">Edit / Paste CSV</button>
+            <button id="prev-btn">Previous</button>
+            <button id="next-btn" class="primary">Next</button>
             <button id="autoplay-btn">Auto-Play</button>
         </div>
     </header>
 
     <div id="stage-container">
-        <!-- Avatars will be injected here -->
+        <!-- Avatars injected here -->
     </div>
 
     <main>
         <div id="script-container"></div>
     </main>
 
+    <!-- EDITOR MODAL -->
+    <div id="editor-modal">
+        <div id="editor-content">
+            <div class="editor-header">
+                <h2>Manage Program Order</h2>
+                <button onclick="closeEditor()" style="background:#ef4444; border:none; color:white;">Cancel</button>
+            </div>
+            <div class="editor-body">
+                <div class="editor-column">
+                    <h3>Drag to Reorder Programs</h3>
+                    <div id="sortable-list">
+                        <!-- Draggable items will be here -->
+                    </div>
+                </div>
+                <div class="editor-column">
+                    <h3>Paste CSV Data</h3>
+                    <p style="font-size:0.8rem; color:#888; margin-bottom:0.5rem;">Paste full CSV content here to override current session.</p>
+                    <textarea id="csv-input" placeholder="Speaker, Chinese, English..."></textarea>
+                    <button class="secondary" style="margin-top:1rem;" onclick="processPastedCSV()">Load from Text Box</button>
+                </div>
+            </div>
+            <div class="editor-footer">
+                <button class="primary" onclick="applyEditorChanges()">Apply Changes</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Holds "Morning" and "Afternoon" arrays
         const allData = {json.dumps(all_data, ensure_ascii=False)};
-        // Updated Host Order
         const hosts = ["Amy", "多多", "Emeline", "Jason", "Jasmine", "Chris", "Esther", "Evan"];
         
         let currentSession = 'Morning';
-        let scriptData = []; // Will hold current session data
+        let scriptData = []; // Flat array for rendering
+        let structured segments = []; // [{header:..., lines:[]}, ...] for editing
+        
         let currentIndex = -1;
         let autoPlayInterval = null;
         
-        // --- Init Session Data ---
+        // --- DATA STRUCTURE MANAGEMENT ---
+        
+        // Flatten structured segments back to simple component list
+        function flattenSegments(segs) {{
+            const flat = [];
+            segs.forEach(seg => {{
+                if (seg.header) flat.push(seg.header);
+                seg.lines.forEach(line => flat.push(line));
+            }});
+            return flat;
+        }}
+        
+        // Group flat data into segments based on Headers
+        function groupToSegments(flatData) {{
+            if (!flatData || flatData.length === 0) return [];
+            const segs = [];
+            let currentSeg = {{ header: null, lines: [] }};
+            
+            flatData.forEach(item => {{
+                if (item.type === 'header') {{
+                    // If we have accumulated lines or a previous header, push it
+                    if (currentSeg.header || currentSeg.lines.length > 0) {{
+                        segs.push(currentSeg);
+                    }}
+                    currentSeg = {{ header: item, lines: [] }};
+                }} else {{
+                    currentSeg.lines.push(item);
+                }}
+            }});
+            
+            // Push final segment
+            if (currentSeg.header || currentSeg.lines.length > 0) {{
+                segs.push(currentSeg);
+            }}
+            
+            return segs;
+        }}
+
         function initSession(sessionName) {{
             currentSession = sessionName;
             scriptData = allData[sessionName] || [];
             
             // Re-index
-            scriptData.forEach((item, idx) => {{
-                item.index = idx;
-            }});
+            scriptData.forEach((item, idx) => {{ item.index = idx; }});
             
-            // Clean up UI
             currentIndex = 0;
             render();
-            // Reset active tab UI
+            
+            // UI Update
             document.querySelectorAll('.tab-btn').forEach(btn => {{
                 if(btn.textContent === sessionName) btn.classList.add('active');
                 else btn.classList.remove('active');
             }});
-            
             setIndex(0);
         }}
 
         function switchTab(sessionName) {{
-            if (autoPlayInterval) {{
-                clearInterval(autoPlayInterval);
-                autoPlayInterval = null;
-                document.getElementById('autoplay-btn').textContent = 'Auto-Play';
-                document.getElementById('autoplay-btn').classList.remove('primary');
-            }}
+            stopAutoPlay();
             initSession(sessionName);
         }}
 
+        // --- EDITOR LOGIC ---
+        let dragSrcEl = null;
+
+        function openEditor() {{
+            document.getElementById('editor-modal').style.display = 'flex';
+            
+            // 1. Convert current session data to segments
+            const segs = groupToSegments(scriptData);
+            
+            // 2. Render Drag List
+            const listEl = document.getElementById('sortable-list');
+            listEl.innerHTML = '';
+            
+            segs.forEach((seg, idx) => {{
+                const item = document.createElement('div');
+                item.className = 'sortable-item';
+                item.draggable = true;
+                item.dataset.index = idx;
+                
+                const title = seg.header ? seg.header.text : `(Segment ${{idx+1}} - No Header)`;
+                item.innerHTML = `<span class="handle">☰</span> <span>${{title}}</span>`;
+                
+                // Events
+                item.addEventListener('dragstart', handleDragStart);
+                item.addEventListener('dragover', handleDragOver);
+                item.addEventListener('drop', handleDrop);
+                item.addEventListener('dragenter', handleDragEnter);
+                item.addEventListener('dragleave', handleDragLeave);
+                item.addEventListener('dragend', handleDragEnd);
+                
+                listEl.appendChild(item);
+            }});
+            
+            // 3. Clear CSV box
+            document.getElementById('csv-input').value = '';
+        }}
+        
+        function closeEditor() {{
+            document.getElementById('editor-modal').style.display = 'none';
+        }}
+        
+        function applyEditorChanges() {{
+            // Reconstruct order from DOM
+            const listEl = document.getElementById('sortable-list');
+            const newOrderIndices = Array.from(listEl.children).map(child => parseInt(child.dataset.index));
+            
+            const oldSegs = groupToSegments(scriptData);
+            const newSegs = newOrderIndices.map(i => oldSegs[i]);
+            
+            // Flatten back to scriptData
+            const newFlat = flattenSegments(newSegs);
+            
+            // Save to master data
+            allData[currentSession] = newFlat;
+            initSession(currentSession);
+            
+            closeEditor();
+        }}
+        
+        function processPastedCSV() {{
+            const text = document.getElementById('csv-input').value;
+            if(!text.trim()) return;
+            
+            const newData = parseCSV(text);
+            if (newData.length > 0) {{
+                // Update master data immediately
+                allData[currentSession] = newData;
+                // Refresh Editor List so they can reorder if they want
+                // Note: we need to update scriptData temporary var to reflect paste for groupToSegments to work
+                scriptData = newData;
+                
+                // Re-render the sortable list
+                const segs = groupToSegments(scriptData);
+                const listEl = document.getElementById('sortable-list');
+                listEl.innerHTML = '';
+                 segs.forEach((seg, idx) => {{
+                    const item = document.createElement('div');
+                    item.className = 'sortable-item';
+                    item.draggable = true;
+                    item.dataset.index = idx;
+                    const title = seg.header ? seg.header.text : `(Segment ${{idx+1}} - No Header)`;
+                    item.innerHTML = `<span class="handle">☰</span> <span>${{title}}</span>`;
+                    item.addEventListener('dragstart', handleDragStart);
+                    item.addEventListener('dragover', handleDragOver);
+                    item.addEventListener('drop', handleDrop);
+                    item.addEventListener('dragenter', handleDragEnter);
+                    item.addEventListener('dragleave', handleDragLeave);
+                    item.addEventListener('dragend', handleDragEnd);
+                    listEl.appendChild(item);
+                }});
+                
+                alert(`Parsed ${{newData.length}} lines. You can now reorder them or Click Apply.`);
+            }} else {{
+                alert('Could not parse CSV.');
+            }}
+        }}
+
+        // --- Drag & Drop Handlers ---
+        function handleDragStart(e) {{
+            dragSrcEl = this;
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/html', this.innerHTML);
+            this.style.opacity = '0.4';
+        }}
+        
+        function handleDragOver(e) {{
+            if (e.preventDefault) e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            return false;
+        }}
+        
+        function handleDragEnter(e) {{ this.classList.add('over'); }}
+        function handleDragLeave(e) {{ this.classList.remove('over'); }}
+        
+        function handleDrop(e) {{
+            if (e.stopPropagation) e.stopPropagation();
+            if (dragSrcEl !== this) {{
+                // Swap DOM elements
+                // Note: Swapping innerHTML or dataset index is naive. Best to swap nodes.
+                // However, for this simple list, let's just swap indices and content logic visually,
+                // BUT actually we need to preserve the data mapping.
+                // Easier approach: Move the element in the DOM
+                
+                const list = this.parentNode;
+                const items = Array.from(list.children);
+                const srcIdx = items.indexOf(dragSrcEl);
+                const targetIdx = items.indexOf(this);
+                
+                if (srcIdx < targetIdx) {{
+                    list.insertBefore(dragSrcEl, this.nextSibling);
+                }} else {{
+                    list.insertBefore(dragSrcEl, this);
+                }}
+            }}
+            return false;
+        }}
+        
+        function handleDragEnd(e) {{
+            this.style.opacity = '1';
+            document.querySelectorAll('.sortable-item').forEach(item => item.classList.remove('over'));
+        }}
+
+        // --- CSV PARSING (Same as before) ---
+        function parseCSV(text) {{
+            const lines = text.split(/\\r?\\n/);
+            const data = [];
+            let currentSpeaker = null;
+            
+            for (let line of lines) {{
+                const row = [];
+                let inQuote = false;
+                let currentVal = '';
+                for (let i = 0; i < line.length; i++) {{
+                    const char = line[i];
+                    if (char === '"') inQuote = !inQuote;
+                    else if (char === ',' && !inQuote) {{ row.push(currentVal.trim()); currentVal = ''; }}
+                    else currentVal += char;
+                }}
+                row.push(currentVal.trim());
+                while (row.length < 3) row.push('');
+                
+                let speaker = row[0].replace(/^"|"$/g, '').trim(); 
+                const text_cn = row[1].replace(/^"|"$/g, '').trim();
+                const text_en = row[2].replace(/^"|"$/g, '').trim();
+
+                if (!speaker && !text_cn && !text_en) continue;
+                if (speaker.toLowerCase() === 'ending') {{
+                     data.push({{ type: 'header', text: 'Ending' }});
+                     currentSpeaker = null; continue;
+                }}
+                
+                const combined = (text_cn + text_en).toLowerCase();
+                if (combined.includes('minutes') || speaker.includes('minutes')) continue;
+
+                if (speaker === '节目' || text_cn.startsWith('#') || (!speaker && text_cn.startsWith('#'))) {{
+                    data.push({{ type: 'header', text: text_cn + ' ' + text_en }});
+                    currentSpeaker = null; continue;
+                }}
+
+                if (speaker) currentSpeaker = speaker;
+                const effectiveSpeaker = speaker || currentSpeaker;
+                
+                 if (effectiveSpeaker && (effectiveSpeaker.includes('开场') || text_cn.includes('开场')) && !text_en) {{
+                     if (text_cn.length < 10) {{
+                        data.push({{ type: 'header', text: effectiveSpeaker.includes('开场') ? effectiveSpeaker : text_cn}});
+                        currentSpeaker = null; continue;
+                     }}
+                }}
+                
+                if (effectiveSpeaker) {{
+                    data.push({{ type: 'dialogue', speaker: effectiveSpeaker, text_cn: text_cn, text_en: text_en }});
+                }}
+            }}
+            return data;
+        }}
+
+        // --- SIMULATOR LOGIC (Standard) ---
         function getSegmentSpeakers(idx) {{
-            let start = idx;
-            let end = idx;
-            
             if (scriptData.length === 0) return [];
+            let start = idx, end = idx;
+            while(start > 0 && scriptData[start] && scriptData[start].type !== 'header') start--;
+            while(end < scriptData.length - 1 && scriptData[end+1] && scriptData[end+1].type !== 'header') end++;
             
-            // Safely limit while loops
-            while(start > 0 && scriptData[start] && scriptData[start].type !== 'header') {{
-                start--;
-            }}
-            while(end < scriptData.length - 1 && scriptData[end+1] && scriptData[end+1].type !== 'header') {{
-                end++;
-            }}
-            
-            if (!scriptData[idx] || scriptData[idx].type === 'header') {{
-                 return [];
-            }}
+            if (!scriptData[idx] || scriptData[idx].type === 'header') return [];
 
             const speakers = new Set();
             for (let i = start; i <= end; i++) {{
                 const s = scriptData[i].speaker;
                 if (s) {{
                     const sLower = s.toLowerCase();
-                    if (sLower === 'all' || sLower.includes('one by one')) {{
-                        return hosts; 
-                    }}
+                    if (sLower === 'all' || sLower.includes('one by one')) return hosts; 
                     const clean = s.replace(/[^a-zA-Z\u4e00-\u9fa5]/g, ''); 
                     if (hosts.includes(clean)) speakers.add(clean);
                 }}
@@ -515,39 +697,25 @@ html_content = f"""<!DOCTYPE html>
             return Array.from(speakers);
         }}
 
-        // --- Init Stage ---
         const stage = document.getElementById('stage-container');
         const avatarEls = {{}};
-        
-        // Create avatars
         hosts.forEach((name, index) => {{
             const el = document.createElement('div');
             const sideClass = index < 4 ? 'side-left' : 'side-right';
-            
             el.className = `avatar ${{sideClass}}`;
             el.dataset.name = name;
             el.style.setProperty('--i', index); 
-            
-            el.innerHTML = `
-                <div class="avatar-inner">
-                    <div class="avatar-body">${{name[0]}}</div>
-                    <div class="avatar-name">${{name}}</div>
-                </div>
-            `;
+            el.innerHTML = `<div class="avatar-inner"><div class="avatar-body">${{name[0]}}</div><div class="avatar-name">${{name}}</div></div>`;
             stage.appendChild(el);
             avatarEls[name] = el;
         }});
 
-
-        // --- Render Script ---
         const container = document.getElementById('script-container');
-        
         function render() {{
             container.innerHTML = '';
             scriptData.forEach((item, index) => {{
                 const el = document.createElement('div');
                 el.id = 'line-' + index;
-                
                 if (item.type === 'header') {{
                     el.className = 'header-item';
                     el.textContent = item.text;
@@ -555,11 +723,7 @@ html_content = f"""<!DOCTYPE html>
                     el.className = 'line-item';
                     const s = item.speaker || '';
                     const cleanSpeaker = s.replace(/[^a-zA-Z\u4e00-\u9fa5]/g, '');
-                    el.innerHTML = `
-                        <div class="speaker-label speaker-${{cleanSpeaker}}">${{item.speaker}}</div>
-                        <div class="content-cn">${{item.text_cn}}</div>
-                        <div class="content-en">${{item.text_en}}</div>
-                    `;
+                    el.innerHTML = `<div class="speaker-label speaker-${{cleanSpeaker}}">${{item.speaker}}</div><div class="content-cn">${{item.text_cn}}</div><div class="content-en">${{item.text_en}}</div>`;
                 }}
                 el.addEventListener('click', () => setIndex(index));
                 container.appendChild(el);
@@ -570,19 +734,17 @@ html_content = f"""<!DOCTYPE html>
             if (scriptData.length === 0) return;
             if (index < 0) index = 0;
             if (index >= scriptData.length) index = scriptData.length - 1;
-
+            
             if (currentIndex !== -1) {{
                 const prev = document.getElementById('line-' + currentIndex);
                 if (prev) prev.classList.remove('active');
             }}
-
             currentIndex = index;
             const nextEl = document.getElementById('line-' + currentIndex);
             if (nextEl) {{
                 nextEl.classList.add('active');
                 nextEl.scrollIntoView({{ behavior: 'smooth', block: 'center' }});
             }}
-            
             updateStage(index);
         }}
         
@@ -590,56 +752,38 @@ html_content = f"""<!DOCTYPE html>
             const activeSpeakers = getSegmentSpeakers(index);
             const currentItem = scriptData[index];
             if (!currentItem) return;
-            
             const currentSpeakerRaw = currentItem.speaker || '';
             const speakersLower = currentSpeakerRaw.toLowerCase();
-            
             const isAll = speakersLower === 'all' || speakersLower.includes('one by one');
             const isOneByOne = speakersLower.includes('one by one');
             const currentSpeaker = currentSpeakerRaw.replace(/[^a-zA-Z\u4e00-\u9fa5]/g, '');
             
-            // Update visibility
             hosts.forEach(name => {{
                 const el = avatarEls[name];
+                if (isOneByOne) el.classList.add('slow-entry'); else el.classList.remove('slow-entry');
                 
-                // Toggle slow entry class
-                if (isOneByOne) {{
-                    el.classList.add('slow-entry');
-                }} else {{
-                    el.classList.remove('slow-entry');
-                }}
+                if (activeSpeakers.includes(name)) el.classList.add('visible');
+                else {{ el.classList.remove('visible'); el.classList.remove('speaking'); }}
                 
-                // Are they on stage?
-                if (activeSpeakers.includes(name)) {{
-                    el.classList.add('visible');
-                }} else {{
-                    el.classList.remove('visible');
-                    el.classList.remove('speaking');
-                }}
-                
-                // Are they speaking right now?
-                if (name === currentSpeaker || (isAll && activeSpeakers.includes(name))) {{
-                    el.classList.add('speaking');
-                }} else {{
-                    el.classList.remove('speaking');
-                }}
+                if (name === currentSpeaker || (isAll && activeSpeakers.includes(name))) el.classList.add('speaking');
+                else el.classList.remove('speaking');
             }});
         }}
 
-        // --- Controls ---
         function next() {{ setIndex(currentIndex + 1); }}
         function prev() {{ setIndex(currentIndex - 1); }}
-        
-        function toggleAutoPlay() {{
-            const btn = document.getElementById('autoplay-btn');
+        function stopAutoPlay() {{
             if (autoPlayInterval) {{
-                clearInterval(autoPlayInterval);
-                autoPlayInterval = null;
-                btn.textContent = 'Auto-Play';
-                btn.classList.remove('primary');
-            }} else {{
-                btn.textContent = 'Stop';
-                btn.classList.add('primary');
+                clearInterval(autoPlayInterval); autoPlayInterval = null;
+                const btn = document.getElementById('autoplay-btn');
+                btn.textContent = 'Auto-Play'; btn.classList.remove('primary');
+            }}
+        }} 
+        function toggleAutoPlay() {{
+            if (autoPlayInterval) stopAutoPlay();
+            else {{
+                const btn = document.getElementById('autoplay-btn');
+                btn.textContent = 'Stop'; btn.classList.add('primary');
                 next();
                 autoPlayInterval = setInterval(next, 3000);
             }}
@@ -648,21 +792,12 @@ html_content = f"""<!DOCTYPE html>
         document.getElementById('next-btn').addEventListener('click', next);
         document.getElementById('prev-btn').addEventListener('click', prev);
         document.getElementById('autoplay-btn').addEventListener('click', toggleAutoPlay);
-        
         document.addEventListener('keydown', (e) => {{
-            if (e.code === 'Space' || e.code === 'ArrowRight') {{
-                e.preventDefault();
-                next();
-            }}
-            if (e.code === 'ArrowLeft') {{
-                e.preventDefault();
-                prev();
-            }}
+            if (e.code === 'Space' || e.code === 'ArrowRight') {{ e.preventDefault(); next(); }}
+            if (e.code === 'ArrowLeft') {{ e.preventDefault(); prev(); }}
         }});
 
-        // Init with Morning
         initSession('Morning');
-
     </script>
 </body>
 </html>
