@@ -10,7 +10,7 @@
             --card-bg: #1e293b;
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
-            --accent-color: #f59e0b; /* Gold/Orange for CNY */
+            --accent-color: #f59e0b;
             --accent-glow: rgba(245, 158, 11, 0.4);
             
             /* Speaker Identities */
@@ -24,11 +24,7 @@
             --speaker-emeline: #d946ef;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -40,8 +36,9 @@
             overflow: hidden;
         }
 
+        /* --- HEADER & CONTROLS --- */
         header {
-            padding: 0.5rem 2rem;
+            padding: 0.5rem 1rem;
             background: rgba(15, 23, 42, 0.95);
             border-bottom: 1px solid #334155;
             display: flex;
@@ -54,26 +51,27 @@
         .header-left {
             display: flex;
             align-items: center;
-            gap: 2rem;
+            gap: 1rem;
         }
 
         h1 {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             color: var(--accent-color);
             text-shadow: 0 0 10px var(--accent-glow);
-            margin-right: 1rem;
+            margin-right: 0.5rem;
+            white-space: nowrap;
         }
         
         .tabs {
             display: flex;
             background: #0f172a;
-            padding: 4px;
+            padding: 2px;
             border-radius: 8px;
             border: 1px solid #334155;
         }
         
         .tab-btn {
-            padding: 0.5rem 1rem;
+            padding: 0.4rem 0.8rem;
             border-radius: 6px;
             border: none;
             background: transparent;
@@ -81,6 +79,7 @@
             cursor: pointer;
             font-weight: 500;
             transition: all 0.2s;
+            font-size: 0.85rem;
         }
         
         .tab-btn.active {
@@ -88,14 +87,11 @@
             color: var(--text-primary);
             box-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }
-        
-        .tab-btn:hover:not(.active) {
-            color: var(--text-primary);
-        }
 
         #controls {
             display: flex;
-            gap: 1rem;
+            gap: 0.5rem;
+            align-items: center;
         }
 
         button {
@@ -107,7 +103,7 @@
             cursor: pointer;
             transition: all 0.2s ease;
             font-weight: 500;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         button:hover {
@@ -121,7 +117,117 @@
             border: none;
         }
 
-        /* --- STAGE AREA --- */
+        /* --- EDITOR MODAL --- */
+        #editor-modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            display: none; /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        
+        #editor-content {
+            background: var(--bg-color);
+            width: 90%;
+            max-width: 1000px;
+            height: 80vh;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #334155;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        .editor-header {
+            padding: 1rem;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .editor-body {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+        
+        .editor-column {
+            flex: 1;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #334155;
+            overflow-y: auto;
+        }
+        
+        .editor-column:last-child { border-right: none; }
+        
+        .editor-column h3 {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Drag & Drop List */
+        #sortable-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .sortable-item {
+            background: var(--card-bg);
+            padding: 0.75rem;
+            border-radius: 6px;
+            cursor: grab;
+            border: 1px solid #334155;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.2s;
+        }
+        
+        .sortable-item:hover {
+            background: #334155;
+        }
+        
+        .sortable-item:active {
+            cursor: grabbing;
+        }
+        
+        .sortable-item .handle {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+        
+        /* CSV Text Area */
+        #csv-input {
+            flex: 1;
+            background: #020617;
+            color: #ccc;
+            border: 1px solid #334155;
+            padding: 1rem;
+            font-family: monospace;
+            resize: none;
+            border-radius: 6px;
+        }
+        
+        .editor-footer {
+            padding: 1rem;
+            border-top: 1px solid #334155;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        /* --- STAGE --- */
         #stage-container {
             height: 35vh;
             background: linear-gradient(to bottom, #020617, #0f172a);
@@ -136,133 +242,63 @@
         }
 
         .avatar {
-            /* COLLAPSED STATE (Hidden) */
-            width: 0;
-            margin: 0;
-            opacity: 0;
+            width: 0; margin: 0; opacity: 0;
             transform: scale(0.8);
-            
-            height: 140px; /* Increased height for body */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-end;
+            height: 140px; 
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
             position: relative;
-            
-            /* Staggered entry */
             transition: 
                 width 0.5s ease-in-out,
                 margin 0.5s ease-in-out,
                 opacity 0.5s ease-in-out,
                 transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-            
             overflow: hidden;
         }
         
-        /* Apply dynamic delay based on index for natural entrance */
         .avatar.visible {
+            width: 80px; margin: 0 1rem; opacity: 1;
+            transform: translateX(0) scale(1);
             transition-delay: calc(var(--i) * 0.1s);
         }
-        
-        /* Slow stagger for one-by-one visualization */
         .avatar.visible.slow-entry {
             transition-delay: calc(var(--i) * 0.5s);
         }
-
-        .avatar-inner {
-            width: 80px; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-        }
-
-        /* Side Exit transforms */
-        .avatar.side-left {
-            transform: translateX(-150px) scale(0.8);
-        }
-
-        .avatar.side-right {
-           transform: translateX(150px) scale(0.8);
-        }
+        .avatar.side-left { transform: translateX(-150px) scale(0.8); }
+        .avatar.side-right { transform: translateX(150px) scale(0.8); }
+        .avatar.speaking { transform: translateY(-15px) scale(1.15); z-index: 10; }
         
-        .avatar.visible {
-            /* VISIBLE STATE */
-            width: 80px;
-            margin: 0 1rem;
-            opacity: 1;
-            transform: translateX(0) scale(1);
-        }
+        .avatar-inner { width: 80px; display: flex; flex-direction: column; align-items: center; position: relative; }
 
-        .avatar.speaking {
-            transform: translateY(-15px) scale(1.15);
-            z-index: 10;
-        }
-        
-        .avatar.speaking .avatar-body {
-            box-shadow: 0 0 20px var(--glow-color);
-            border: 2px solid #fff;
-        }
-
-        /* HUMAN FIGURE STYLES */
+        /* Humanoid Figure */
         .avatar-body {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
+            width: 50px; height: 50px; border-radius: 50%;
             background: var(--color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 1.2rem;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 1.2rem;
             color: rgba(255,255,255,0.9);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             border: 2px solid transparent;
             transition: all 0.3s ease;
-            position: relative;
-            z-index: 2; /* Ensure head is above body */
+            position: relative; z-index: 2;
         }
-        
-        /* Body/Torso */
+        .avatar.speaking .avatar-body {
+            box-shadow: 0 0 20px var(--glow-color); border: 2px solid #fff;
+        }
         .avatar-body::after {
-            content: '';
-            position: absolute;
-            top: 45px; /* Position below head */
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 40px;
-            background: var(--color);
-            opacity: 0.8;
-            border-radius: 20px 20px 0 0; /* Rounded shoulders */
-            z-index: -1;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            content: ''; position: absolute; top: 45px; left: 50%; transform: translateX(-50%);
+            width: 60px; height: 40px; background: var(--color); opacity: 0.8;
+            border-radius: 20px 20px 0 0; z-index: -1;
         }
-        
-        /* Neck connection */
         .avatar-body::before {
-             content: '';
-             position: absolute;
-             bottom: -5px;
-             width: 20px;
-             height: 10px;
-             background: var(--color);
-             z-index: -1;
+             content: ''; position: absolute; bottom: -5px; width: 20px; height: 10px;
+             background: var(--color); z-index: -1;
         }
-
         .avatar-name {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            background: rgba(0,0,0,0.6);
-            padding: 2px 6px;
-            border-radius: 4px;
-            white-space: nowrap;
-            margin-top: 45px; /* Push name down below body */
-            z-index: 3;
+            font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);
+            background: rgba(0,0,0,0.6); padding: 2px 6px; border-radius: 4px;
+            white-space: nowrap; margin-top: 45px; z-index: 3;
         }
         
-        /* Speaker Colors Implementation */
+        /* Speaker Colors */
         .avatar[data-name="Jasmine"] { --color: var(--speaker-jasmine); --glow-color: var(--speaker-jasmine); }
         .avatar[data-name="Esther"] { --color: var(--speaker-esther); --glow-color: var(--speaker-esther); }
         .avatar[data-name="Amy"] { --color: var(--speaker-amy); --glow-color: var(--speaker-amy); }
@@ -272,56 +308,23 @@
         .avatar[data-name="多多"] { --color: var(--speaker-duoduo); --glow-color: var(--speaker-duoduo); }
         .avatar[data-name="Emeline"] { --color: var(--speaker-emeline); --glow-color: var(--speaker-emeline); }
 
-
-        main {
-            flex: 1;
-            overflow-y: auto;
-            padding: 2rem;
-            scroll-behavior: smooth;
-        }
-
-        #script-container {
-            max-width: 800px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            padding-bottom: 50vh;
-        }
-
+        main { flex: 1; overflow-y: auto; padding: 2rem; scroll-behavior: smooth; }
+        #script-container { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem; padding-bottom: 50vh; }
+        
         .line-item {
-            opacity: 0.4;
-            transition: all 0.3s ease;
-            border-left: 4px solid #334155;
-            padding: 1rem;
-            border-radius: 0 8px 8px 0;
-            background: transparent;
+            opacity: 0.4; transition: all 0.3s ease; border-left: 4px solid #334155; padding: 1rem;
+            border-radius: 0 8px 8px 0; background: transparent;
         }
-
         .line-item.active {
-            opacity: 1;
-            background: var(--card-bg);
-            border-left-color: var(--accent-color);
+            opacity: 1; background: var(--card-bg); border-left-color: var(--accent-color);
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
         }
-
         .header-item {
-            margin-top: 3rem;
-            margin-bottom: 1rem;
-            text-align: center;
-            color: var(--accent-color);
-            font-size: 1.5rem;
-            font-weight: bold;
-            border-bottom: 1px solid #334155;
-            padding-bottom: 0.5rem;
+            margin-top: 3rem; margin-bottom: 1rem; text-align: center;
+            color: var(--accent-color); font-size: 1.5rem; font-weight: bold;
+            border-bottom: 1px solid #334155; padding-bottom: 0.5rem;
         }
-        
-        .speaker-label {
-             font-weight: bold;
-             margin-bottom: 0.25rem;
-             display: block;
-        }
-        
+        .speaker-label { font-weight: bold; margin-bottom: 0.25rem; display: block; }
         .speaker-Jasmine { color: var(--speaker-jasmine); }
         .speaker-Esther { color: var(--speaker-esther); }
         .speaker-Amy { color: var(--speaker-amy); }
@@ -336,75 +339,12 @@
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #475569; }
 
-        /* Responsive / Mobile Styles */
         @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                height: auto;
-                padding: 1rem;
-                gap: 1rem;
-            }
-            
-            .header-left {
-                flex-direction: column;
-                gap: 0.5rem;
-                width: 100%;
-            }
-
-            h1 {
-                font-size: 1.2rem;
-                margin-right: 0;
-                text-align: center;
-            }
-            
-            #controls {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .tabs {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .tab-btn {
-                flex: 1;
-                text-align: center;
-            }
-
-            /* Adjust Stage */
-            #stage-container {
-                height: 30vh;
-                padding-bottom: 3rem; 
-            }
-            
-            .avatar.visible {
-                width: 50px; /* Reduced visual width space */
-                margin: 0 0.15rem; /* Very tight margins */
-            }
-            
-            .avatar-inner {
-                 transform: scale(0.65); 
-            }
-            
-            /* Adjust Script View */
-            main {
-                padding: 1rem;
-            }
-            
-            #script-container {
-                 gap: 1rem;
-            }
-            
-            .content-cn {
-                font-size: 1.1rem;
-            }
-            
-            .content-en {
-                font-size: 0.9rem;
-            }
+            header { flex-direction: column; height: auto; padding: 1rem; gap: 1rem; }
+            .header-left { flex-direction: column; gap: 0.5rem; width: 100%; }
+            #controls { width: 100%; justify-content: center; flex-wrap: wrap; }
+            .avatar.visible { width: 50px; margin: 0 0.15rem; }
         }
-
     </style>
 </head>
 <body>
@@ -417,89 +357,331 @@
             </div>
         </div>
         <div id="controls">
-            <button id="prev-btn">Previous (←)</button>
-            <button id="next-btn" class="primary">Next (Space/→)</button>
+            <button class="secondary" onclick="openEditor()">Edit / Paste CSV</button>
+            <button id="prev-btn">Previous</button>
+            <button id="next-btn" class="primary">Next</button>
             <button id="autoplay-btn">Auto-Play</button>
         </div>
     </header>
 
     <div id="stage-container">
-        <!-- Avatars will be injected here -->
+        <!-- Avatars injected here -->
     </div>
 
     <main>
         <div id="script-container"></div>
     </main>
 
+    <!-- EDITOR MODAL -->
+    <div id="editor-modal">
+        <div id="editor-content">
+            <div class="editor-header">
+                <h2>Manage Program Order</h2>
+                <button onclick="closeEditor()" style="background:#ef4444; border:none; color:white;">Cancel</button>
+            </div>
+            <div class="editor-body">
+                <div class="editor-column">
+                    <h3>Drag to Reorder Programs</h3>
+                    <div id="sortable-list">
+                        <!-- Draggable items will be here -->
+                    </div>
+                </div>
+                <div class="editor-column">
+                    <h3>Paste CSV Data</h3>
+                    <p style="font-size:0.8rem; color:#888; margin-bottom:0.5rem;">Paste full CSV content here to override current session.</p>
+                    <textarea id="csv-input" placeholder="Speaker, Chinese, English..."></textarea>
+                    <button class="secondary" style="margin-top:1rem;" onclick="processPastedCSV()">Load from Text Box</button>
+                </div>
+            </div>
+            <div class="editor-footer">
+                <button class="primary" onclick="applyEditorChanges()">Apply Changes</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Holds "Morning" and "Afternoon" arrays
         const allData = {"Morning": [{"type": "header", "text": "开场"}, {"type": "dialogue", "speaker": "Jasmine", "text_cn": "金蛇狂舞辞旧去     Jīn shé kuáng wǔ cí jiù qù", "text_en": ""}, {"type": "dialogue", "speaker": "Jasmine", "text_cn": "骏马扬蹄踏岁来     Jùn mǎ yáng tí tà suì lái", "text_en": ""}, {"type": "dialogue", "speaker": "Esther", "text_cn": "瑞气临门春作序     Ruì qì lín mén chūn zuò xù     ,", "text_en": ""}, {"type": "dialogue", "speaker": "Esther", "text_cn": "祥云入户福登台     Xiáng yún rù hù fú dēng tái", "text_en": ""}, {"type": "dialogue", "speaker": "Amy", "text_cn": "四海同胞齐欢聚     Sì hǎi tóng bāo qí huān jù", "text_en": ""}, {"type": "dialogue", "speaker": "Amy", "text_cn": "里城华人共开怀     Lǐ chéng huá rén gòng kāi huái", "text_en": ""}, {"type": "dialogue", "speaker": "Chris", "text_cn": "女士们，先生们，小朋友们， 大家~~", "text_en": ""}, {"type": "dialogue", "speaker": "all", "text_cn": "过~~年~~好~~!!!", "text_en": ""}, {"type": "dialogue", "speaker": "one by one", "text_cn": "我是主持人 1，2，3 ….8", "text_en": ""}, {"type": "dialogue", "speaker": "Jason", "text_cn": "欢迎来到由美华协会 维中分会 主办的 里士满 2026 马年 春节联欢会!", "text_en": ""}, {"type": "dialogue", "speaker": "Evan", "text_cn": "Ladies and Gentlemen, Welcome to the Richmond 2026 Year of the Horse  Lunar New Year Celebration, hosted by the OCA Asian Pacific American Advocates, Central Virginia Chapter, OCA-CVC.", "text_en": ""}, {"type": "dialogue", "speaker": "多多", "text_cn": "On behalf of the OCA-CVC, we wish everyone a Happy Spring Festival and a prosperous Year of the Horse!", "text_en": ""}, {"type": "dialogue", "speaker": "Emeline", "text_cn": "美华协会 维中分会，是一个501(c)非盈利组织，致力于改善华裔和其他亚太裔美国人的生活。\n爆竹声声辞旧岁，竹报平安又一年。\n我们代表美华协会 维中分会 祝大家新春快乐，马年吉祥！在这里给您～～", "text_en": ""}, {"type": "dialogue", "speaker": "all", "text_cn": "拜~~年~~啦~~!!!", "text_en": ""}, {"type": "header", "text": "#1 合唱 《世界赠予我的》CVCS "}, {"type": "dialogue", "speaker": "Jasmine", "text_cn": "在这辞旧迎新的美好时刻，我们用歌声传递祝福，用舞蹈表达喜悦，用真情共庆新春佳节！", "text_en": ""}, {"type": "dialogue", "speaker": "Chris", "text_cn": "At this wonderful moment, we convey our blessings through song, express our joy through dance, and celebrate the Spring Festival together with heartfelt sincerity.", "text_en": ""}, {"type": "dialogue", "speaker": "Jasmine", "text_cn": "这首歌，在过去一年荣获多项年度大奖，以动人的旋律打动了无数人心。\n让我们倾听 维中中文学校 带来的歌曲 《世界赠予我的》。", "text_en": ""}, {"type": "dialogue", "speaker": "Chris", "text_cn": "Please welcome the CVCS Central Virginia Chinese School Choir performing \" World Bestowed.\"", "text_en": ""}, {"type": "header", "text": "#2 霓裳焰语 Neon Flame Whisper "}, {"type": "dialogue", "speaker": "Esther", "text_cn": "下面登场的是 Julianne Woo， 她带来了舞蹈《霓裳焰语》。用舞姿点燃舞台， 热烈与优雅同时绽放。", "text_en": ""}, {"type": "dialogue", "speaker": "多多", "text_cn": "Next enjoy dance: 'Neon Flame Whisper'，performed by Julianne Woo", "text_en": ""}, {"type": "header", "text": "#3 独唱《梅花赋》Ode to the Plum Blossom "}, {"type": "dialogue", "speaker": "Amy", "text_cn": "疏影横斜水清浅 暗香浮动月黄昏    梅花，傲雪凌霜，与松、竹并称“岁寒三友\"", "text_en": ""}, {"type": "dialogue", "speaker": "Evan", "text_cn": "是的，梅，兰、竹、菊并为“花中四君子”，尽显高洁风骨。", "text_en": ""}, {"type": "dialogue", "speaker": "Amy", "text_cn": "请欣赏 Qian Junqi 带来的独唱《梅花赋》。", "text_en": ""}, {"type": "dialogue", "speaker": "Evan", "text_cn": "The plum blossom, one of the “Three Friends of Winter,” symbolizes noble character and steadfast friendship.\nPlease enjoy Qian Junqi’s new rendition of “Ode to the Plum Blossom.”", "text_en": ""}, {"type": "header", "text": "#4   风  The Wind "}, {"type": "dialogue", "speaker": "Emeline", "text_cn": "风，看不见，却无处不在；风，无形，却能撼动人心。", "text_en": ""}, {"type": "dialogue", "speaker": "Chris", "text_cn": "接下来，Richmond Folk Dance Group 将用舞蹈描绘风的形态与力量。", "text_en": ""}, {"type": "dialogue", "speaker": "Emeline", "text_cn": "The wind is invisible, yet it is everywhere;\nNext, the Richmond Folk Dance Group will use dance to depict the form and power of the wind.", "text_en": ""}, {"type": "header", "text": "#5 明天会更好 "}, {"type": "dialogue", "speaker": "Jasmine", "text_cn": "多多, 有没有这样一首中文歌，能够穿越时间，依然打动人心？", "text_en": ""}, {"type": "dialogue", "speaker": "多多", "text_cn": "有，它经久不衰，用美好的旋律传递希望。", "text_en": ""}, {"type": "dialogue", "speaker": "Jesmine", "text_cn": "请欣赏二重唱  《明天会更好》，表演者：Sun Yue & Abing。", "text_en": ""}, {"type": "dialogue", "speaker": "多多", "text_cn": "Please enjoy the duet \" Tomorrow Will Be Better,\"  performed by Sun Yue & Abing.", "text_en": ""}, {"type": "header", "text": "#6 故园游春 "}, {"type": "dialogue", "speaker": "Esther", "text_cn": "故园的春天，鸟语花香，光影流转。\n请欣赏由Jìn Xiǎo hóng带来的独舞《故园游春》", "text_en": ""}, {"type": "dialogue", "speaker": "Evan", "text_cn": "Next, please enjoy a solo dance performanced by Jin Xiaohong ，Strolling through a garden of memories.", "text_en": ""}, {"type": "header", "text": "#7 粤语独唱 “上海滩” "}, {"type": "dialogue", "speaker": "Jason", "text_cn": "让歌声带我们穿越时光，重温上海滩的辉煌与传奇！有请 Li Ying  演唱 经典粤语歌曲 《上海滩》。", "text_en": ""}, {"type": "dialogue", "speaker": "Chris", "text_cn": "Enjoy Li Ying performing the classic “Shanghai Bund,”\nand let her voice carry you to the romance and glamour of old Shanghai.", "text_en": ""}, {"type": "header", "text": "#8   红豆  Yearning "}, {"type": "dialogue", "speaker": "Jasmine", "text_cn": "Amy，你知道吗？中国人的情感表达，其实特别含蓄。", "text_en": ""}, {"type": "dialogue", "speaker": "Amy", "text_cn": "正如王维的诗：红豆生南国，春来发几枝？愿君多采撷，此物最相思。", "text_en": ""}, {"type": "dialogue", "speaker": "Jasmine", "text_cn": "接下来，请欣赏敦煌艺术团带来的舞蹈 《红豆》。", "text_en": ""}, {"type": "dialogue", "speaker": "Amy", "text_cn": "In Chinese culture, red beans symbolize deep longing and yearning. Now, please enjoy the dance \"Red Bean\" performed by the Dunhuang Art Troupe.", "text_en": ""}, {"type": "header", "text": "# 9 街舞《主场全开》Take it to the house "}, {"type": "dialogue", "speaker": "Emeline", "text_cn": "少年舞者用律动 和爆发动作 点燃节拍，宣告：哪里都是我们的主场！", "text_en": ""}, {"type": "dialogue", "speaker": "多多", "text_cn": "请欣赏 Yu Dance Arts 带来的街舞作品 《主场全开》\n准备好了吗？一起把氛围带回家！", "text_en": ""}, {"type": "dialogue", "speaker": "Emeline", "text_cn": "Get ready! Take It to the House by Yu Dance Arts，sharp moves, perfect sync, pure energy.  This is their house!", "text_en": ""}, {"type": "header", "text": "#10 \"500 Miles\" by GuZheng and Guitar "}, {"type": "dialogue", "speaker": "Amy", "text_cn": "当东方的古筝遇见西方的吉他，会迸发出怎样的音符火花？", "text_en": ""}, {"type": "dialogue", "speaker": "Jason", "text_cn": "让我们 随着 East Meet West 的弹唱，踏上《500英里路》的音乐旅程。", "text_en": ""}, {"type": "dialogue", "speaker": "Amy", "text_cn": "What kind of musical sparks will fly when the Eastern guzheng meets the Western guitar?\nJoin East Meet West on a musical journey along \"500 Miles.\"", "text_en": ""}, {"type": "header", "text": "#11 《露华浓·花想容》\nGrace of Blossoms • Radiance of Dew "}, {"type": "dialogue", "speaker": "Esther", "text_cn": "云想衣裳花想容，春风拂槛露华浓。Jason， 你知道这是哪位唐代诗人的诗吗", "text_en": ""}, {"type": "dialogue", "speaker": "Jason", "text_cn": "唐代诗人，我就只知道两个，李白和杜甫，我猜这是李白的诗", "text_en": ""}, {"type": "dialogue", "speaker": "Esther", "text_cn": "恭喜你，猜对了！接下来的表演是舞蹈《露华浓，花想容》，灵感来源于这首诗，由Zeng’s Dance School呈献。", "text_en": ""}, {"type": "dialogue", "speaker": "Jason", "text_cn": "The next performance is a dance piece titled \"Grace of Blossoms • Radiance of Dew\" ，presented by Zeng's Dance School.", "text_en": ""}, {"type": "dialogue", "speaker": "Jason", "text_cn": "中场 休息", "text_en": ""}, {"type": "dialogue", "speaker": "Jasmine", "text_cn": "春节联欢会上半场节目到此结束，感谢您的观看！请稍作休息，1:00锁定现场，下半场更多精彩，不见不散。", "text_en": ""}, {"type": "dialogue", "speaker": "Evan", "text_cn": "The first half of the Spring Festival Gala has concluded. Thank you for watching. Please take a short break and join us at 1:00 pm for the exciting second half!  See you then!", "text_en": ""}], "Afternoon": [{"type": "header", "text": "下午开场"}, {"type": "dialogue", "speaker": "Jasmine", "text_cn": "金蛇狂舞辞旧去     Jīn shé kuáng wǔ cí jiù qù", "text_en": ""}, {"type": "dialogue", "speaker": "Jasmine", "text_cn": "骏马扬蹄踏岁来     Jùn mǎ yáng tí tà suì lái", "text_en": ""}, {"type": "dialogue", "speaker": "Jasmine", "text_cn": "马跃春风开鸿运", "text_en": ""}, {"type": "dialogue", "speaker": "Jasmine", "text_cn": "马年盛世展鸿才", "text_en": ""}, {"type": "dialogue", "speaker": "Esther", "text_cn": "瑞气临门春作序     Ruì qì lín mén chūn zuò xù     ,", "text_en": ""}, {"type": "dialogue", "speaker": "Esther", "text_cn": "祥云入户福登台     Xiáng yún rù hù fú dēng tái", "text_en": ""}, {"type": "dialogue", "speaker": "Amy", "text_cn": "四海同胞齐欢聚     Sì hǎi tóng bāo qí huān jù", "text_en": ""}, {"type": "dialogue", "speaker": "Amy", "text_cn": "里城华人共开怀     Lǐ chéng huá rén gòng kāi huái", "text_en": ""}, {"type": "dialogue", "speaker": "Chris", "text_cn": "女士们，先生们，小朋友们， 大家~~", "text_en": ""}, {"type": "dialogue", "speaker": "all", "text_cn": "过~~年~~好~~!!!", "text_en": ""}, {"type": "dialogue", "speaker": "all", "text_cn": "我是主持人 1，2，3 ….8", "text_en": ""}, {"type": "dialogue", "speaker": "Jason", "text_cn": "欢迎来到由美华协会 维中分会 主办的 里士满 2026 马年 春节联欢会!", "text_en": ""}, {"type": "dialogue", "speaker": "Evan", "text_cn": "Ladies and Gentlemen, Welcome to the Richmond 2026 Year of the Horse  Lunar New Year Celebration, hosted by the OCA Asian Pacific American Advocates, Central Virginia Chapter, OCA-CVC.", "text_en": ""}, {"type": "dialogue", "speaker": "多多", "text_cn": "On behalf of the OCA-CVC, we wish everyone a Happy Spring Festival and a prosperous Year of the Horse!", "text_en": ""}, {"type": "dialogue", "speaker": "Emeline", "text_cn": "爆竹声声辞旧岁，竹报平安又一年。\n我们代表美华协会 维中分会 祝大家新春快乐，马年吉祥！在这里给您～～", "text_en": ""}, {"type": "dialogue", "speaker": "all", "text_cn": "拜~~年~~啦~~!!!", "text_en": ""}, {"type": "dialogue", "speaker": "all", "text_cn": "会长致词", "text_en": ""}, {"type": "dialogue", "speaker": "Emeline", "text_cn": "美华协会 维中分会，是一个501(c)非盈利组织，致力于改善华裔和其他亚太裔美国人的生活。", "text_en": ""}, {"type": "dialogue", "speaker": "Jason", "text_cn": "Organization of Chinese-Americans, Central Virginia chapter, is a 501(c)  membership-driven organization dedicated to the betterment of Chinese and other Asian Pacific Americans", "text_en": ""}, {"type": "dialogue", "speaker": "Emeline", "text_cn": "OCA CVC 除了开展本地项目外，还支持全国总部的教育和领导力培养项目。", "text_en": ""}, {"type": "dialogue", "speaker": "Jason", "text_cn": "The local chapter supports OCA National's programs for education, advocacy and leadership, in addition to local programs.", "text_en": ""}, {"type": "dialogue", "speaker": "Emeline", "text_cn": "下面有请 维中美华协会主席 刘洁女士致新年贺词", "text_en": ""}, {"type": "dialogue", "speaker": "Jason", "text_cn": "Now, please welcome Ms. Liu Jie, President of OCA-CVC, to deliver her New Year's greetings.", "text_en": ""}, {"type": "header", "text": "#12 《聆听》 “Listen Attentively ” "}, {"type": "dialogue", "speaker": "Jesmine", "text_cn": "春节联欢会上半场的节目精彩纷呈，接下来，下半场的表演马上开始.", "text_en": ""}, {"type": "dialogue", "speaker": "Chris", "text_cn": "The first half of the Spring Festival Gala was spectacular, and now the exciting performances of the second half are about to begin. Let's look forward to more joy and surprises!", "text_en": ""}, {"type": "dialogue", "speaker": "Jesmine", "text_cn": "静谧森林中，阳光透过树影，微风轻语。", "text_en": ""}, {"type": "dialogue", "speaker": "Chris", "text_cn": "一只只灵动的小鹿，竖起耳朵，静静聆听", "text_en": ""}, {"type": "dialogue", "speaker": "Jesmine", "text_cn": "请欣赏 On The One Dance 带来的舞蹈《聆听》", "text_en": ""}, {"type": "dialogue", "speaker": "Chris", "text_cn": "In a tranquil forest, sunlight and breeze whisper. A graceful deer dances with nature,\nshowing the harmony of humans and all living things.  Please enjoy \"Listening,\" a dance performance by On The One Dance.", "text_en": ""}, {"type": "header", "text": "#13 丟手绢- Drop the handkerchief "}, {"type": "dialogue", "speaker": "Emeline", "text_cn": "童年有歌，童心有梦；请欣赏 Yu Dance Arts 带来的舞蹈 《丢手绢》\n在天真烂漫的舞姿中，重温那份追逐的快乐与纯真的笑容！", "text_en": ""}, {"type": "dialogue", "speaker": "多多", "text_cn": "Next, please enjoy the dance performance \"Dropping the Handkerchief\" by Yu Dance Arts.\nThrough these innocent and joyful dance movements, relive the happiness of chasing and the pure smiles of childhood!\"", "text_en": ""}, {"type": "header", "text": "#14 杨式32 式 太极剑 (Taiji Sword) "}, {"type": "dialogue", "speaker": "Jason", "text_cn": "接下来，里村云华太极 给我们带来了《杨式32式 太极剑》。", "text_en": ""}, {"type": "dialogue", "speaker": "Esther", "text_cn": "让我们一同来体悟太极的动静相生， 柔刚并济。", "text_en": ""}, {"type": "dialogue", "speaker": "Jason", "text_cn": "Next, please enjoy Yang-style 32-form Tai Chi Sword by Lǐcūn Yún Huá Tai Chi.\nExperience the harmony of movement and stillness, where gentle grace meets strength and skill meets inner calm.", "text_en": ""}, {"type": "header", "text": "#15 Dawn in Old Shanghai / ​晨光曲 "}, {"type": "dialogue", "speaker": "Amy", "text_cn": "一缕晨光，唤醒弄堂。身着旗袍的女子，执扇而坐。", "text_en": ""}, {"type": "dialogue", "speaker": "Evan", "text_cn": "在袅袅烟火中，平凡的清晨化成了最温柔的诗。", "text_en": ""}, {"type": "dialogue", "speaker": "Amy", "text_cn": "请欣赏 Yu Dance Arts 带来的舞蹈《晨光曲》", "text_en": ""}, {"type": "dialogue", "speaker": "Evan", "text_cn": "Step into 1930s Shanghai — the “Paris of the East,”  where jazz filled the streets and lilong alleys whispered everyday life.   Please enjoy Yu Dance Arts’ performance: “Dawn in Old Shanghai.”", "text_en": ""}, {"type": "header", "text": "#16  战台风（Fighting the Typhoon) "}, {"type": "dialogue", "speaker": "Jason", "text_cn": "台风呼啸，滚滚而来，犹如万马奔腾。请欣赏古筝独奏《战台风》，表演者：Jennifer Ran。", "text_en": ""}, {"type": "dialogue", "speaker": "Chris", "text_cn": "The typhoon roared in like a stampede of thousands of horses. Please enjoy the guzheng solo \"Battling the Typhoon,\" performed by Jennifer Ran.", "text_en": ""}, {"type": "header", "text": "#17《鹅 鹅 鹅》 "}, {"type": "dialogue", "speaker": "Amy", "text_cn": "“鹅，鹅，鹅，曲项向天歌”，Esther, 你小时候背过这首唐诗吗", "text_en": ""}, {"type": "dialogue", "speaker": "Esther", "text_cn": "背过的，不仅背过，小时候还跳过咏鹅舞呢！", "text_en": ""}, {"type": "dialogue", "speaker": "Amy", "text_cn": "看，这里  有  一群  小＂白鹅”  们 在 舞台上翩 翩  展翅", "text_en": ""}, {"type": "dialogue", "speaker": "Esther", "text_cn": "她们 用 欢快的舞步，把 古诗 跳进 新年的 喜庆里", "text_en": ""}, {"type": "dialogue", "speaker": "Amy", "text_cn": "让我们一起来欣赏  On The One Dance 带来的   \"会 跳舞 的 古诗”  《鹅鹅鹅》！", "text_en": ""}, {"type": "dialogue", "speaker": "Esther", "text_cn": "“Goose, goose, goose, with its graceful neck singing to the sky,” from Luo Binwang’s Ode to the Goose, comes to life on stage.  Please enjoy this “dancing poem” presented by On The One Dance，", "text_en": ""}, {"type": "header", "text": "#18 秋日 Autumn Day "}, {"type": "dialogue", "speaker": "Emeline", "text_cn": "秋天，是丰收的季节，也是喜悦的季节！", "text_en": ""}, {"type": "dialogue", "speaker": "多多", "text_cn": "让我们随着风之舞艺术团，走进他们带来的节目 《秋日》。", "text_en": ""}, {"type": "dialogue", "speaker": "Emeline", "text_cn": "Next, please enjoy the performance of \"Autumn\" by the Wind Dance Art Troupe.", "text_en": ""}, {"type": "header", "text": "#19 相声《其实不是那么回事》 "}, {"type": "dialogue", "speaker": "Jason", "text_cn": "Jasmine, 你有没有听过相声？", "text_en": ""}, {"type": "dialogue", "speaker": "Jasmine", "text_cn": "相声？ 这个我听过。是一种中国的传统曲艺。", "text_en": ""}, {"type": "dialogue", "speaker": "Jason", "text_cn": "没错，就是这门又风趣又充满智慧的艺术。", "text_en": ""}, {"type": "dialogue", "speaker": "Jasmine", "text_cn": "接下来请欣赏相声《其实不是那么回事》。", "text_en": ""}, {"type": "dialogue", "speaker": "Jason", "text_cn": "那是怎么回事？", "text_en": ""}, {"type": "dialogue", "speaker": "Jasmine", "text_cn": "那我们听听到底怎么回事。 有请表演者陶星仰、陶星聿。", "text_en": ""}, {"type": "dialogue", "speaker": "Jason", "text_cn": "Crosstalk is a traditional Chinese art blending humor and wisdom.\nPlease enjoy Tao Xingyang and Tao Xingyu in “It’s Not Quite Like That.”", "text_en": ""}, {"type": "header", "text": "#20 混声合唱《草原夜色美》Beautiful Night on the Prairie\n混声合唱 《月亮代表我的心》The Moon Represents My Heart "}, {"type": "dialogue", "speaker": "Evan", "text_cn": "掌声有请  雅歌合唱团 演唱两首好听的歌曲： 《草原夜色美》  《月亮代表我的心》", "text_en": ""}, {"type": "dialogue", "speaker": "Amy", "text_cn": "Next, please enjoy two songs performed by the YaGe Choir: \"Beautiful Night on the Prairie,\"  and \"The Moon Represents My Heart\"", "text_en": ""}, {"type": "header", "text": "#21  Arirang/ ​阿里郎 "}, {"type": "dialogue", "speaker": "Esther", "text_cn": "Chris，考考你，中国有多少个少数民族？", "text_en": ""}, {"type": "dialogue", "speaker": "Chris", "text_cn": "嗯……我知道我是汉族，还知道回族、满族、苗族、朝鲜族……其他的一下子想不出来了。", "text_en": ""}, {"type": "dialogue", "speaker": "Esther", "text_cn": "知道的已经不少了！中华民族有汉族和 55 个少数民族，其中，朝鲜族文化独具魅力。", "text_en": ""}, {"type": "dialogue", "speaker": "Chris", "text_cn": "请欣赏 Yu Dance Arts 带来的朝鲜族舞蹈《阿里郎》。", "text_en": ""}, {"type": "dialogue", "speaker": "Esther", "text_cn": "Next, please welcome Yu Dance Arts’ Teen Diamond class with “Arirang,”\nwhere graceful traditional movements meet modern energy, celebrating the vibrant spirit of China’s Korean community.", "text_en": ""}, {"type": "header", "text": "#22   哈尼宝贝 Hani Baby  敦煌艺术团 "}, {"type": "dialogue", "speaker": "Emeline", "text_cn": "当银饰清脆作响，哈尼族的使者们将用纯真的舞步，", "text_en": ""}, {"type": "dialogue", "speaker": "多多", "text_cn": "带我们穿越云雾，感受最炽热的民族心跳！", "text_en": ""}, {"type": "dialogue", "speaker": "Emeline", "text_cn": "掌声有请 敦煌艺术团带来的舞蹈《哈尼宝贝》", "text_en": ""}, {"type": "dialogue", "speaker": "多多", "text_cn": "Clinking silver, swirling skirts,  the Hani little messengers take us through the mist, into the vibrant heartbeat of their culture.\nPlease welcome Dunhuang Arts Troupe with “Hani Baby.”", "text_en": ""}, {"type": "header", "text": "#23 我怎样去爱你 "}, {"type": "dialogue", "speaker": "Chris", "text_cn": "这首中国新美声风格的作品，旋律优美，情感深沉。", "text_en": ""}, {"type": "dialogue", "speaker": "Evan", "text_cn": "掌声欢迎  Mary Hao 带来的 女声独唱 《我怎样去爱你》。", "text_en": ""}, {"type": "dialogue", "speaker": "Chris", "text_cn": "Next, please enjoy the female solo “How Do I Love You”.\nThis piece, in the Chinese New Bel Canto style, is beautifully melodic and deeply emotional.\nLet’s welcome the performer, Mary Hao!", "text_en": ""}, {"type": "header", "text": "#24 舞蹈：上春山 "}, {"type": "dialogue", "speaker": "Jason", "text_cn": "春风作伴，万物生长；", "text_en": ""}, {"type": "dialogue", "speaker": "Amy", "text_cn": "让我们以热烈掌声，欢迎里士满东方歌舞团，带来舞蹈 《上春山》！", "text_en": ""}, {"type": "dialogue", "speaker": "Jason", "text_cn": "Next, let's give a warm round of applause to the Richmond Oriental Dance and Music Troupe, who will present the dance \"'Ascending Spring Mountain \"", "text_en": ""}, {"type": "header", "text": "#25《毕业舞会》 “Graduation Ball” "}, {"type": "dialogue", "speaker": "Esther", "text_cn": "青春在旋转中定格，梦想在足尖上绽放。", "text_en": ""}, {"type": "dialogue", "speaker": "多多", "text_cn": "接下来，请欣赏芭蕾变奏《毕业舞会》，表演者：Dehila", "text_en": ""}, {"type": "dialogue", "speaker": "Esther", "text_cn": "Youth is captured in a moment of graceful rotation, and dreams blossom on the tips of the toes.", "text_en": ""}, {"type": "dialogue", "speaker": "多多", "text_cn": "Next, please enjoy the ballet variation \"Graduation Ball,\" performed by Dehila.", "text_en": ""}, {"type": "header", "text": "#26 莲叶翩翩   whispering lotus leave "}, {"type": "dialogue", "speaker": "Emeline", "text_cn": "江南可采莲，莲叶何田田。", "text_en": ""}, {"type": "dialogue", "speaker": "Chris", "text_cn": "晨光拂水，莲叶轻舞，荷香盈袖", "text_en": ""}, {"type": "dialogue", "speaker": "Emeline", "text_cn": "让我们一同欣赏Yu Dance Arts 带来的中国古典舞《莲叶翩翩》。", "text_en": ""}, {"type": "dialogue", "speaker": "Chris", "text_cn": "As morning light caresses the water, lotus leaves sway and fragrance fills the air.\nPlease enjoy “Whispering Lotus Leaves” by Yu Dance Arts.", "text_en": ""}, {"type": "header", "text": "#27 梨花颂 Pear Blossom Ode "}, {"type": "dialogue", "speaker": "Evan", "text_cn": "华人以“吃苦耐劳”闻名世界，同时也热爱生活与艺术。Jasmine, 你听过中国戏曲吗？", "text_en": ""}, {"type": "dialogue", "speaker": "Jasmine", "text_cn": "中国戏曲流派众多，其中京剧被誉为“国剧”，与书法、中医、武术并称为四大国粹。接下来请欣赏京剧选段《梨花颂》，表演者：Liu Jie", "text_en": ""}, {"type": "dialogue", "speaker": "Evan", "text_cn": "Chinese opera is vast and profound.\nPeking Opera, the “national opera,” is one of China’s four great cultural treasures, alongside calligraphy, traditional medicine, and martial arts.  Next, please enjoy an excerpt from Peking Opera – \"Ode to Pear Blossoms,\" performed by Jie Liu.", "text_en": ""}, {"type": "header", "text": "#28 “茉莉”（Jasmine） "}, {"type": "dialogue", "speaker": "Esther", "text_cn": "请欣赏 华艺舞团 带来的舞蹈 《茉莉》，轻盈舞姿中，茉莉花的清香与优雅  化作了动人的诗篇。", "text_en": ""}, {"type": "dialogue", "speaker": "多多", "text_cn": "Next, please welcome the Huayi Dance Troupe to perform “Jasmine.”\nThrough graceful movements, the dancers bring the jasmine’s delicate fragrance and elegance to life.", "text_en": ""}, {"type": "header", "text": "#29 《百花争妍》 "}, {"type": "dialogue", "speaker": "Amy", "text_cn": "春回大地，百花竞放，宛如一副流动的画卷", "text_en": ""}, {"type": "dialogue", "speaker": "Evan", "text_cn": "让我们跟随舞者步伐，走进花海，感受自然的灵动。", "text_en": ""}, {"type": "dialogue", "speaker": "Amy", "text_cn": "请欣赏 On The One Dance 带来的舞蹈 《百花争妍》。", "text_en": ""}, {"type": "dialogue", "speaker": "Evan", "text_cn": "Please enjoy “Flowers Bloom in Beauty” by On The One Dance,\nwhere dancers’ graceful steps lead us into a vibrant sea of blossoms and the joy of spring.", "text_en": ""}, {"type": "header", "text": "# 30 东方歌舞团合唱   世界赠予我的 "}, {"type": "dialogue", "speaker": "Emeline", "text_cn": "上半场第一个节目的歌声还在我耳边回响，Jasmine 你还记得吗？", "text_en": ""}, {"type": "dialogue", "speaker": "Jasmine", "text_cn": "世界赠予我拥有 也赠予我回敬", "text_en": ""}, {"type": "dialogue", "speaker": "Emeline", "text_cn": "没错！世界赠予我们美好，也赋予我们回馈的机会。", "text_en": ""}, {"type": "dialogue", "speaker": "Jasmine", "text_cn": "现在，欢迎 东方歌舞团 合唱 《世界赠予我的》，用歌声为礼，致敬世界！", "text_en": ""}, {"type": "dialogue", "speaker": "Emeline", "text_cn": "The world gives us beauty and the chance to give back.\nNow, please welcome Dongfang Arts Troupe performing “World Bestowed＂\nusing their voices as a gift to honor the world!", "text_en": ""}, {"type": "header", "text": "Ending"}, {"type": "dialogue", "speaker": "Esther", "text_cn": "欢歌笑语，浓浓年味，拉近了我们彼此的距离", "text_en": ""}, {"type": "dialogue", "speaker": "Jasmine", "text_cn": "同心同行，情满舞台，凝聚的是里士满华人社区的团结与力量", "text_en": ""}, {"type": "dialogue", "speaker": "Emeline", "text_cn": "相聚相离，难忘今宵。感谢您对OCA-CVC的大力支持！", "text_en": ""}, {"type": "dialogue", "speaker": "Amy", "text_cn": "骏马奔腾迎福至， 祝大家春节愉快，阖家幸福，马年大吉！", "text_en": ""}, {"type": "dialogue", "speaker": "多多", "text_cn": "乘骐骥以驰骋，一马平川，马到成功！", "text_en": ""}, {"type": "dialogue", "speaker": "Evan", "text_cn": "2026年春节联欢会到此圆满落幕，明年再见！", "text_en": ""}, {"type": "dialogue", "speaker": "Chris", "text_cn": "Joyful songs and laughter, \nWorking together in unity, \nwith hearts full of warmth on the stage, \nThank you all for your strong support of OCA-CVC!", "text_en": ""}, {"type": "dialogue", "speaker": "Jason", "text_cn": "Wishing you a happy Lunar New Year and great fortune in the Year of the Horse!\nThe 2026 Spring Festival Gala concludes successfully here. See you next year!", "text_en": ""}, {"type": "dialogue", "speaker": "All", "text_cn": "see you next year  明年再见！", "text_en": ""}]};
-        // Updated Host Order
         const hosts = ["Amy", "多多", "Emeline", "Jason", "Jasmine", "Chris", "Esther", "Evan"];
         
         let currentSession = 'Morning';
-        let scriptData = []; // Will hold current session data
+        let scriptData = []; // Flat array for rendering
+        let structuredSegments = []; // List of segments for editing
+        
         let currentIndex = -1;
         let autoPlayInterval = null;
         
-        // --- Init Session Data ---
+        // --- DATA STRUCTURE MANAGEMENT ---
+        
+        // Flatten structured segments back to simple component list
+        function flattenSegments(segs) {
+            const flat = [];
+            segs.forEach(seg => {
+                if (seg.header) flat.push(seg.header);
+                seg.lines.forEach(line => flat.push(line));
+            });
+            return flat;
+        }
+        
+        // Group flat data into segments based on Headers
+        function groupToSegments(flatData) {
+            if (!flatData || flatData.length === 0) return [];
+            const segs = [];
+            let currentSeg = { header: null, lines: [] };
+            
+            flatData.forEach(item => {
+                if (item.type === 'header') {
+                    // If we have accumulated lines or a previous header, push it
+                    if (currentSeg.header || currentSeg.lines.length > 0) {
+                        segs.push(currentSeg);
+                    }
+                    currentSeg = { header: item, lines: [] };
+                } else {
+                    currentSeg.lines.push(item);
+                }
+            });
+            
+            // Push final segment
+            if (currentSeg.header || currentSeg.lines.length > 0) {
+                segs.push(currentSeg);
+            }
+            
+            return segs;
+        }
+
         function initSession(sessionName) {
             currentSession = sessionName;
             scriptData = allData[sessionName] || [];
             
             // Re-index
-            scriptData.forEach((item, idx) => {
-                item.index = idx;
-            });
+            scriptData.forEach((item, idx) => { item.index = idx; });
             
-            // Clean up UI
             currentIndex = 0;
             render();
-            // Reset active tab UI
+            
+            // UI Update
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 if(btn.textContent === sessionName) btn.classList.add('active');
                 else btn.classList.remove('active');
             });
-            
             setIndex(0);
         }
 
         function switchTab(sessionName) {
-            if (autoPlayInterval) {
-                clearInterval(autoPlayInterval);
-                autoPlayInterval = null;
-                document.getElementById('autoplay-btn').textContent = 'Auto-Play';
-                document.getElementById('autoplay-btn').classList.remove('primary');
-            }
+            stopAutoPlay();
             initSession(sessionName);
         }
 
+        // --- EDITOR LOGIC ---
+        let dragSrcEl = null;
+
+        function openEditor() {
+            document.getElementById('editor-modal').style.display = 'flex';
+            
+            // 1. Convert current session data to segments
+            const segs = groupToSegments(scriptData);
+            
+            // 2. Render Drag List
+            const listEl = document.getElementById('sortable-list');
+            listEl.innerHTML = '';
+            
+            segs.forEach((seg, idx) => {
+                const item = document.createElement('div');
+                item.className = 'sortable-item';
+                item.draggable = true;
+                item.dataset.index = idx;
+                
+                const title = seg.header ? seg.header.text : `(Segment ${idx+1} - No Header)`;
+                item.innerHTML = `<span class="handle">☰</span> <span>${title}</span>`;
+                
+                // Events
+                item.addEventListener('dragstart', handleDragStart);
+                item.addEventListener('dragover', handleDragOver);
+                item.addEventListener('drop', handleDrop);
+                item.addEventListener('dragenter', handleDragEnter);
+                item.addEventListener('dragleave', handleDragLeave);
+                item.addEventListener('dragend', handleDragEnd);
+                
+                listEl.appendChild(item);
+            });
+            
+            // 3. Clear CSV box
+            document.getElementById('csv-input').value = '';
+        }
+        
+        function closeEditor() {
+            document.getElementById('editor-modal').style.display = 'none';
+        }
+        
+        function applyEditorChanges() {
+            // Reconstruct order from DOM
+            const listEl = document.getElementById('sortable-list');
+            const newOrderIndices = Array.from(listEl.children).map(child => parseInt(child.dataset.index));
+            
+            const oldSegs = groupToSegments(scriptData);
+            const newSegs = newOrderIndices.map(i => oldSegs[i]);
+            
+            // Flatten back to scriptData
+            const newFlat = flattenSegments(newSegs);
+            
+            // Save to master data
+            allData[currentSession] = newFlat;
+            initSession(currentSession);
+            
+            closeEditor();
+        }
+        
+        function processPastedCSV() {
+            const text = document.getElementById('csv-input').value;
+            if(!text.trim()) return;
+            
+            const newData = parseCSV(text);
+            if (newData.length > 0) {
+                // Update master data immediately
+                allData[currentSession] = newData;
+                // Refresh Editor List so they can reorder if they want
+                // Note: we need to update scriptData temporary var to reflect paste for groupToSegments to work
+                scriptData = newData;
+                
+                // Re-render the sortable list
+                const segs = groupToSegments(scriptData);
+                const listEl = document.getElementById('sortable-list');
+                listEl.innerHTML = '';
+                 segs.forEach((seg, idx) => {
+                    const item = document.createElement('div');
+                    item.className = 'sortable-item';
+                    item.draggable = true;
+                    item.dataset.index = idx;
+                    const title = seg.header ? seg.header.text : `(Segment ${idx+1} - No Header)`;
+                    item.innerHTML = `<span class="handle">☰</span> <span>${title}</span>`;
+                    item.addEventListener('dragstart', handleDragStart);
+                    item.addEventListener('dragover', handleDragOver);
+                    item.addEventListener('drop', handleDrop);
+                    item.addEventListener('dragenter', handleDragEnter);
+                    item.addEventListener('dragleave', handleDragLeave);
+                    item.addEventListener('dragend', handleDragEnd);
+                    listEl.appendChild(item);
+                });
+                
+                alert(`Parsed ${newData.length} lines. You can now reorder them or Click Apply.`);
+            } else {
+                alert('Could not parse CSV.');
+            }
+        }
+
+        // --- Drag & Drop Handlers ---
+        function handleDragStart(e) {
+            dragSrcEl = this;
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/html', this.innerHTML);
+            this.style.opacity = '0.4';
+        }
+        
+        function handleDragOver(e) {
+            if (e.preventDefault) e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            return false;
+        }
+        
+        function handleDragEnter(e) { this.classList.add('over'); }
+        function handleDragLeave(e) { this.classList.remove('over'); }
+        
+        function handleDrop(e) {
+            if (e.stopPropagation) e.stopPropagation();
+            if (dragSrcEl !== this) {
+                // Swap DOM elements
+                // Note: Swapping innerHTML or dataset index is naive. Best to swap nodes.
+                // However, for this simple list, let's just swap indices and content logic visually,
+                // BUT actually we need to preserve the data mapping.
+                // Easier approach: Move the element in the DOM
+                
+                const list = this.parentNode;
+                const items = Array.from(list.children);
+                const srcIdx = items.indexOf(dragSrcEl);
+                const targetIdx = items.indexOf(this);
+                
+                if (srcIdx < targetIdx) {
+                    list.insertBefore(dragSrcEl, this.nextSibling);
+                } else {
+                    list.insertBefore(dragSrcEl, this);
+                }
+            }
+            return false;
+        }
+        
+        function handleDragEnd(e) {
+            this.style.opacity = '1';
+            document.querySelectorAll('.sortable-item').forEach(item => item.classList.remove('over'));
+        }
+
+        // --- CSV PARSING (Same as before) ---
+        function parseCSV(text) {
+            const lines = text.split(/\r?\n/);
+            const data = [];
+            let currentSpeaker = null;
+            
+            for (let line of lines) {
+                const row = [];
+                let inQuote = false;
+                let currentVal = '';
+                for (let i = 0; i < line.length; i++) {
+                    const char = line[i];
+                    if (char === '"') inQuote = !inQuote;
+                    else if (char === ',' && !inQuote) { row.push(currentVal.trim()); currentVal = ''; }
+                    else currentVal += char;
+                }
+                row.push(currentVal.trim());
+                while (row.length < 3) row.push('');
+                
+                let speaker = row[0].replace(/^"|"$/g, '').trim(); 
+                const text_cn = row[1].replace(/^"|"$/g, '').trim();
+                const text_en = row[2].replace(/^"|"$/g, '').trim();
+
+                if (!speaker && !text_cn && !text_en) continue;
+                if (speaker.toLowerCase() === 'ending') {
+                     data.push({ type: 'header', text: 'Ending' });
+                     currentSpeaker = null; continue;
+                }
+                
+                const combined = (text_cn + text_en).toLowerCase();
+                if (combined.includes('minutes') || speaker.includes('minutes')) continue;
+
+                if (speaker === '节目' || text_cn.startsWith('#') || (!speaker && text_cn.startsWith('#'))) {
+                    data.push({ type: 'header', text: text_cn + ' ' + text_en });
+                    currentSpeaker = null; continue;
+                }
+
+                if (speaker) currentSpeaker = speaker;
+                const effectiveSpeaker = speaker || currentSpeaker;
+                
+                 if (effectiveSpeaker && (effectiveSpeaker.includes('开场') || text_cn.includes('开场')) && !text_en) {
+                     if (text_cn.length < 10) {
+                        data.push({ type: 'header', text: effectiveSpeaker.includes('开场') ? effectiveSpeaker : text_cn});
+                        currentSpeaker = null; continue;
+                     }
+                }
+                
+                if (effectiveSpeaker) {
+                    data.push({ type: 'dialogue', speaker: effectiveSpeaker, text_cn: text_cn, text_en: text_en });
+                }
+            }
+            return data;
+        }
+
+        // --- SIMULATOR LOGIC (Standard) ---
         function getSegmentSpeakers(idx) {
-            let start = idx;
-            let end = idx;
-            
             if (scriptData.length === 0) return [];
+            let start = idx, end = idx;
+            while(start > 0 && scriptData[start] && scriptData[start].type !== 'header') start--;
+            while(end < scriptData.length - 1 && scriptData[end+1] && scriptData[end+1].type !== 'header') end++;
             
-            // Safely limit while loops
-            while(start > 0 && scriptData[start] && scriptData[start].type !== 'header') {
-                start--;
-            }
-            while(end < scriptData.length - 1 && scriptData[end+1] && scriptData[end+1].type !== 'header') {
-                end++;
-            }
-            
-            if (!scriptData[idx] || scriptData[idx].type === 'header') {
-                 return [];
-            }
+            if (!scriptData[idx] || scriptData[idx].type === 'header') return [];
 
             const speakers = new Set();
             for (let i = start; i <= end; i++) {
                 const s = scriptData[i].speaker;
                 if (s) {
                     const sLower = s.toLowerCase();
-                    if (sLower === 'all' || sLower.includes('one by one')) {
-                        return hosts; 
-                    }
+                    if (sLower === 'all' || sLower.includes('one by one')) return hosts; 
                     const clean = s.replace(/[^a-zA-Z一-龥]/g, ''); 
                     if (hosts.includes(clean)) speakers.add(clean);
                 }
@@ -507,39 +689,25 @@
             return Array.from(speakers);
         }
 
-        // --- Init Stage ---
         const stage = document.getElementById('stage-container');
         const avatarEls = {};
-        
-        // Create avatars
         hosts.forEach((name, index) => {
             const el = document.createElement('div');
             const sideClass = index < 4 ? 'side-left' : 'side-right';
-            
             el.className = `avatar ${sideClass}`;
             el.dataset.name = name;
             el.style.setProperty('--i', index); 
-            
-            el.innerHTML = `
-                <div class="avatar-inner">
-                    <div class="avatar-body">${name[0]}</div>
-                    <div class="avatar-name">${name}</div>
-                </div>
-            `;
+            el.innerHTML = `<div class="avatar-inner"><div class="avatar-body">${name[0]}</div><div class="avatar-name">${name}</div></div>`;
             stage.appendChild(el);
             avatarEls[name] = el;
         });
 
-
-        // --- Render Script ---
         const container = document.getElementById('script-container');
-        
         function render() {
             container.innerHTML = '';
             scriptData.forEach((item, index) => {
                 const el = document.createElement('div');
                 el.id = 'line-' + index;
-                
                 if (item.type === 'header') {
                     el.className = 'header-item';
                     el.textContent = item.text;
@@ -547,11 +715,7 @@
                     el.className = 'line-item';
                     const s = item.speaker || '';
                     const cleanSpeaker = s.replace(/[^a-zA-Z一-龥]/g, '');
-                    el.innerHTML = `
-                        <div class="speaker-label speaker-${cleanSpeaker}">${item.speaker}</div>
-                        <div class="content-cn">${item.text_cn}</div>
-                        <div class="content-en">${item.text_en}</div>
-                    `;
+                    el.innerHTML = `<div class="speaker-label speaker-${cleanSpeaker}">${item.speaker}</div><div class="content-cn">${item.text_cn}</div><div class="content-en">${item.text_en}</div>`;
                 }
                 el.addEventListener('click', () => setIndex(index));
                 container.appendChild(el);
@@ -562,19 +726,17 @@
             if (scriptData.length === 0) return;
             if (index < 0) index = 0;
             if (index >= scriptData.length) index = scriptData.length - 1;
-
+            
             if (currentIndex !== -1) {
                 const prev = document.getElementById('line-' + currentIndex);
                 if (prev) prev.classList.remove('active');
             }
-
             currentIndex = index;
             const nextEl = document.getElementById('line-' + currentIndex);
             if (nextEl) {
                 nextEl.classList.add('active');
                 nextEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
-            
             updateStage(index);
         }
         
@@ -582,56 +744,38 @@
             const activeSpeakers = getSegmentSpeakers(index);
             const currentItem = scriptData[index];
             if (!currentItem) return;
-            
             const currentSpeakerRaw = currentItem.speaker || '';
             const speakersLower = currentSpeakerRaw.toLowerCase();
-            
             const isAll = speakersLower === 'all' || speakersLower.includes('one by one');
             const isOneByOne = speakersLower.includes('one by one');
             const currentSpeaker = currentSpeakerRaw.replace(/[^a-zA-Z一-龥]/g, '');
             
-            // Update visibility
             hosts.forEach(name => {
                 const el = avatarEls[name];
+                if (isOneByOne) el.classList.add('slow-entry'); else el.classList.remove('slow-entry');
                 
-                // Toggle slow entry class
-                if (isOneByOne) {
-                    el.classList.add('slow-entry');
-                } else {
-                    el.classList.remove('slow-entry');
-                }
+                if (activeSpeakers.includes(name)) el.classList.add('visible');
+                else { el.classList.remove('visible'); el.classList.remove('speaking'); }
                 
-                // Are they on stage?
-                if (activeSpeakers.includes(name)) {
-                    el.classList.add('visible');
-                } else {
-                    el.classList.remove('visible');
-                    el.classList.remove('speaking');
-                }
-                
-                // Are they speaking right now?
-                if (name === currentSpeaker || (isAll && activeSpeakers.includes(name))) {
-                    el.classList.add('speaking');
-                } else {
-                    el.classList.remove('speaking');
-                }
+                if (name === currentSpeaker || (isAll && activeSpeakers.includes(name))) el.classList.add('speaking');
+                else el.classList.remove('speaking');
             });
         }
 
-        // --- Controls ---
         function next() { setIndex(currentIndex + 1); }
         function prev() { setIndex(currentIndex - 1); }
-        
-        function toggleAutoPlay() {
-            const btn = document.getElementById('autoplay-btn');
+        function stopAutoPlay() {
             if (autoPlayInterval) {
-                clearInterval(autoPlayInterval);
-                autoPlayInterval = null;
-                btn.textContent = 'Auto-Play';
-                btn.classList.remove('primary');
-            } else {
-                btn.textContent = 'Stop';
-                btn.classList.add('primary');
+                clearInterval(autoPlayInterval); autoPlayInterval = null;
+                const btn = document.getElementById('autoplay-btn');
+                btn.textContent = 'Auto-Play'; btn.classList.remove('primary');
+            }
+        } 
+        function toggleAutoPlay() {
+            if (autoPlayInterval) stopAutoPlay();
+            else {
+                const btn = document.getElementById('autoplay-btn');
+                btn.textContent = 'Stop'; btn.classList.add('primary');
                 next();
                 autoPlayInterval = setInterval(next, 3000);
             }
@@ -640,21 +784,12 @@
         document.getElementById('next-btn').addEventListener('click', next);
         document.getElementById('prev-btn').addEventListener('click', prev);
         document.getElementById('autoplay-btn').addEventListener('click', toggleAutoPlay);
-        
         document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space' || e.code === 'ArrowRight') {
-                e.preventDefault();
-                next();
-            }
-            if (e.code === 'ArrowLeft') {
-                e.preventDefault();
-                prev();
-            }
+            if (e.code === 'Space' || e.code === 'ArrowRight') { e.preventDefault(); next(); }
+            if (e.code === 'ArrowLeft') { e.preventDefault(); prev(); }
         });
 
-        // Init with Morning
         initSession('Morning');
-
     </script>
 </body>
 </html>

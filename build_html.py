@@ -413,7 +413,7 @@ html_content = f"""<!DOCTYPE html>
         
         let currentSession = 'Morning';
         let scriptData = []; // Flat array for rendering
-        let structured segments = []; // [{header:..., lines:[]}, ...] for editing
+        let structuredSegments = []; // List of segments for editing
         
         let currentIndex = -1;
         let autoPlayInterval = null;
